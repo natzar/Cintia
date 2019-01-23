@@ -24,19 +24,10 @@
   
   <div class="ui collection">
   {{#each collection}}
-
-  {{/each}
+    <a href="{{href}}" class="collection-item">{{#if badge}}<span class="badge">{{badge}}</span>{{/if}} {{name}}</a>
+  
+  {{/each}}
   </div>
   
 
 </script>
-
-<script id="collection-item-template" type="text/x-handlebars-template">
- 
-    <a href="{href}" class="collection-item">{{#if badge}}<span class="badge">{{badge}}</span>{{/badge}} {{text}}</a>
-  
-
-</script>
-
-  
-

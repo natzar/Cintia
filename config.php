@@ -45,10 +45,10 @@
 
     /* Installation Step 3 - Global variables */	
 	$config->set('base_email','contacto@phpninja.info');
-	$config->set('base_title','Standart');
+	$config->set('base_title','Cintia');
 
-	$config->set('seo_title','Standart'); 
-	$config->set('seo_description','Welcome! Simple and enjoyable PHP Framework + CRUD, for DATA-driven Applications.');	
+	$config->set('seo_title','Cintia'); 
+	$config->set('seo_description','');	
 	$config->set('seo_keywords','');
 	$config->set('seo_image','//'.$_SERVER['SERVER_NAME'].$RELATIVE_PATH.'public/img/icons/Facebook.png');
 	
