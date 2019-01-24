@@ -11,9 +11,9 @@ class apiController extends ControllerBase
 		
 
 		echo json_encode(array(
-			array("name" => "Encuadernar", "badge" => "OK", "href" => "#"),
-			array("name" => "Enganxar", "badge" => "OK", "href" => "#"),
-			array("name" => "Tallar", "badge" => "OK", "href" => "#"),
+			array("id" => 1, "name" => "Encuadernar", "badge" => "OK", "href" => "#"),
+			array("id" => 2,"name" => "Enganxar", "badge" => "OK", "href" => "#"),
+			array("id" => 3,"name" => "Tallar", "badge" => "OK", "href" => "#"),
 		));	
 
 	}

@@ -15,7 +15,45 @@ var App = {
 	currentMachine: null,
 	currentWorker: null,
 	clientId: 1,
-	view: null
+	view: null,
+	init: function(){
+		
+		function showTime(){
+		    var date = new Date();
+		    var h = date.getHours(); // 0 - 23
+		    var m = date.getMinutes(); // 0 - 59
+		    var s = date.getSeconds(); // 0 - 59
+		    var session = "AM";
+		    
+		    if(h == 0){
+		        h = 12;
+		    }
+		    
+		    if(h > 12){
+		        h = h - 12;
+		        session = "PM";
+		    }
+		    
+		    h = (h < 10) ? "0" + h : h;
+		    m = (m < 10) ? "0" + m : m;
+		    s = (s < 10) ? "0" + s : s;
+		    
+		    var time = h + ":" + m + ":" + s + " " + session;
+		    document.getElementById("clock").innerText = time;
+		    document.getElementById("clock").textContent = time;
+		    
+		    setTimeout(showTime, 1000);
+		    
+		}
+
+		showTime();
+		this.showJobCollection();
+	},
+	showJobCollection: function(){
+		var jobs = new JobCollectionView({
+    		el:$('#app')
+		});
+	}
 };
 
 
@@ -87,7 +125,7 @@ var JobCollection =  Backbone.Collection.extend({
 	            }
 
 	            this.models = sorted;
-	            self.displayCurrentFolder();
+	            
 			},
 		    initialize: function(){
 		    	
@@ -161,16 +199,46 @@ var JobCollection =  Backbone.Collection.extend({
 
 		
 
+var JobView = Backbone.View.extend({	
+	initialize: function(){
 
+	},
+	events:{
+		'click .js-play-job': 'play',
+		'click .js-close-job': 'close',
 
+	},
+	play: function(e){
+		e.preventDefault();
+		$('.js-play-job',this.el).addClass("hidden");
+		$('.js-close-job',this.el).removeClass("hidden");
+		$('.progress',this.el).removeClass("hidden");
 
+	},
+	close: function(e){
+		e.preventDefault();
+		this.resetView();
+	},
+	render: function(id){
+		var source  = document.getElementById("job-template").innerHTML;
+		var template = Handlebars.compile(source);
+		var context = {name:"X"}; //{title: "My New Post", body: "This is my first post!"};
+		console.log("render",context);
+		var html    = template({collection:context});
+		$('#app').html(html);
 
+		// Clock
+		
 
+	},
+	resetView: function(){
+		$('.js-play-job').removeClass("hidden");
+		$('.js-close-job',this.el).addClass("hidden");
+		$('.progress',this.el).addClass("hidden");
+	}
+});
 
-
-/* header view */
-var AppView = Backbone.View.extend({	
-	
+var JobCollectionView = Backbone.View.extend({	
 	initialize: function() {
 		var self = this;
 		this.render();
@@ -180,25 +248,34 @@ var AppView = Backbone.View.extend({
 		App.Collections.jobs = new JobCollection();
 	},
 
-	events: {
-		'click #checkbox-select-all': 'toggleItems',
-		'click input.select-item': 'selectItem',		
-		'mouseup .folder-item': 'navigateToFolder',
-		'click .js-actions-bar__download': 'downloadItems',
-		'click .documents-options a': 'switchLayout',
-		// 'click .sort': 'sortColumns'
+	events: {		
+		'click .collection-item': 'showJob',		
 	},
+	showJob: function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		id = $(e.target).attr("id");
+		console.log("Opening job",id);
+		var job_view = new JobView({
+    		el:$('#app')
+		});
+
+		job_view.render(id);
+	}
 	
 });
 
 
+
+
+
+
+
+
+
+
 $(document).ready(function(){
-
-	App.view = new AppView({
-    	el:$('#app')
-	});
-
-
+	App.init();
 });
 
 
