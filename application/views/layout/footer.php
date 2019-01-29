@@ -19,7 +19,7 @@
     <script src="public/vendor/ie10-viewport-bug-workaround.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ca.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.6.0/NoSleep.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
     <script src="public/vendor/backbone.min.js"></script>
 	<!-- jQuery CDN-->

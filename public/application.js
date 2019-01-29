@@ -7,6 +7,7 @@
 
 $ = jQuery;
 
+var noSleep = new NoSleep();
 
 var App = {
 	Collections: {},
@@ -31,10 +32,13 @@ var App = {
 		$('#app').html(template(context));
 
 
-		
 
 		this.Views['sidebar'] = new JobCollectionView({
     		el:$('#nav-mobile')
+		});
+
+		this.Views['job'] = new JobView({
+    		el:$('#app')
 		});
 		
 		
@@ -47,6 +51,12 @@ var App = {
 		}		else{
 			console.log('failed to show'+sectionId);
 		}
+	},
+	saveActivity: function(data){
+		data.worker = App.currentWorker;
+		data.clientId = App.clientId; // nice 
+		var activity = new Activity(data);
+		activity.save();
 	}
 };
 
@@ -61,10 +71,6 @@ var Activity = Backbone.Model.extend({
         'delete':'/documents/delete/'
     },
    idAttribute: "id",
-   defaults:{
-   		worker: App.currentWorker // nice 
-   }
-
 });
 
 var JobCollection =  Backbone.Collection.extend({	
@@ -175,6 +181,10 @@ var JobView = Backbone.View.extend({
 		$('.js-close-job',this.el).removeClass("hidden");
 		$('.progress',this.el).removeClass("hidden");
 		this.start_date = moment();
+		document.addEventListener('click', function enableNoSleep() {
+  			document.removeEventListener('click', enableNoSleep, false);
+  			noSleep.enable();
+		}, false);		
 	},
 	stop: function(e){
 		e.preventDefault();
@@ -183,7 +193,7 @@ var JobView = Backbone.View.extend({
 			this.end_date = moment();
 			this.resetView();
 			this.save();
-			
+			noSleep.disable();
 		}
 	},
 	render: function(id){
@@ -216,11 +226,11 @@ var JobView = Backbone.View.extend({
 
 
 
-		console.log('save',data);
-		var activity = new Activity(data);
-		activity.save();
+		App.saveActivity(data);
+		
 	}
 });
+
 
 var JobCollectionView = Backbone.View.extend({	
 	initialize: function() {
@@ -238,10 +248,8 @@ var JobCollectionView = Backbone.View.extend({
 		e.stopPropagation();
 		var id = $(e.target).attr("id");
 		console.log("Opening job",id);
-		var job_view = new JobView({
-    		el:$('#app')
-		});
-		job_view.render(id);
+		
+		App.Views['job'].render(id);
 		$('#nav-mobile').sidenav('close');
 	}	
 });
