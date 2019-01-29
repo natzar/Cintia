@@ -21,6 +21,12 @@
 	    <meta charset="utf-8">
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   		<meta http-equiv="content-language" content="<?= $_SESSION['lang']?>" />
+		
+
+		<link rel="manifest" href="/manifest.json">
+		
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
 
 		<!-- Robots - SEO -->
 		<meta name="ROBOTS" content="All,INDEX,FOLLOW">		<!-- No effect, Robots = All is default -->
