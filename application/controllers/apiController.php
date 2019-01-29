@@ -17,6 +17,12 @@ class apiController extends ControllerBase
 		));	
 
 	}
+	public function activity(){
+
+		$activity = json_decode(file_get_contents('php://input'));
+		echo json_encode($activity);
+
+	}
 	public function tags(){
 		echo json_encode(array(
 

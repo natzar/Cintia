@@ -4,12 +4,11 @@
       <a id="logo-container" href="#" class="brand-logo">Cintia</a>
 
       <ul class="right hide-on-med-and-down">
-        <li><div id="clock"></div></li>
-        <li><a href="#">Navbar Link2</a></li>
+        <li><div id="clock"></div></li>        
       </ul>
 
       <ul id="nav-mobile" class="sidenav">
-        <li><a href="#">Navbar Link</a></li>
+        
       </ul>
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>

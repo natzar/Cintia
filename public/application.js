@@ -9,111 +9,67 @@ $ = jQuery;
 
 
 var App = {
-	Models: {},
 	Collections: {},
 	currentJob: null,
 	currentMachine: null,
-	currentWorker: null,
+	currentWorker: 'Lucas',
+	Templates: {},
 	clientId: 1,
-	view: null,
+	Views: {},
 	init: function(){
+		this.Collections.jobs = new JobCollection();
+		this.Templates['job'] = document.getElementById("job-template").innerHTML;
+		this.Templates['collection'] = document.getElementById("collection-template").innerHTML;
+		this.Templates['header'] = document.getElementById("header-template").innerHTML;
 		
-		function showTime(){
-		    var date = new Date();
-		    var h = date.getHours(); // 0 - 23
-		    var m = date.getMinutes(); // 0 - 59
-		    var s = date.getSeconds(); // 0 - 59
-		    var session = "AM";
-		    
-		    if(h == 0){
-		        h = 12;
-		    }
-		    
-		    if(h > 12){
-		        h = h - 12;
-		        session = "PM";
-		    }
-		    
-		    h = (h < 10) ? "0" + h : h;
-		    m = (m < 10) ? "0" + m : m;
-		    s = (s < 10) ? "0" + s : s;
-		    
-		    var time = h + ":" + m + ":" + s + " " + session;
-		    document.getElementById("clock").innerText = time;
-		    document.getElementById("clock").textContent = time;
-		    
-		    setTimeout(showTime, 1000);
-		    
-		}
 
-		showTime();
-		this.showJobCollection();
-	},
-	showJobCollection: function(){
-		var jobs = new JobCollectionView({
-    		el:$('#app')
+		var template = Handlebars.compile(this.Templates['header']);
+		var context = {button: "", title: "Benvingut", subheader: "Fes click a les 3 ralles per començar", "icon": ""}
+				
+				//$('.sidenav').sidenav('close');
+				
+		$('#app').html(template(context));
+
+
+		
+
+		this.Views['sidebar'] = new JobCollectionView({
+    		el:$('#nav-mobile')
 		});
+		
+		
+	},
+	show: function(sectionId){
+		console.log('trying to show'+sectionId);
+		if (typeof this.Views[sectionId] != "undefined"){
+			this.Views[sectionId].render();
+			console.log('eureka to show'+sectionId);
+		}		else{
+			console.log('failed to show'+sectionId);
+		}
 	}
 };
 
 
-
-var JobModel = Backbone.Model.extend({
-    url:'/'+App.clientId+'/documents',
-    urlRoot:'/'+App.clientId+'/documents',
-    methodToURL:{    	
+var Activity = Backbone.Model.extend({
+    url:'/CintiaApp/en/api/activity',
+    //urlRoot:'/'+App.clientId+'/documents',
+	methodToURL:{    	
         'read':'/documents/read',
-        'create':'/documents/add',
+        'create':'/CintiaApp/en/api/activity',
         'update':'/documents/edit/',
         'delete':'/documents/delete/'
     },
-    // sync:function (method, model, options) {
-    //     options = options || {};
-    //     options.url = model.methodToURL[method.toLowerCase()];
-    //     if (method == 'delete' || method == 'update') {
-    //         options.url += model.attributes.id
-    //     }
-    //     if (method == 'read' && model.attributes.id) {
-    //         options.url += '/view/' + model.attributes.id
-    //     }
-        
-    //     if( typeof model.attributes.action != 'undefined') {
-    //         switch (model.attributes.action) {
-    //             case 'reorder':
-    //                 options.url = '/'+bootstrap.site_id+'/documents/reorder';
-    //             break;
-    //             case 'set_permissions':
-    //                 options.url = '/'+bootstrap.site_id+'/documents/set_permissions/'+model.attributes.id;
-    //             break;
-    //             case 'get_permissions':
-    //                 options.url = '/'+bootstrap.site_id+'/documents/get_permissions/'+model.attributes.id;
-    //             break;
-    //             case 'process_permissions':
-    //                 options.url = '/'+bootstrap.site_id+'/documents/process_permissions/'+model.attributes.id;
-    //             break;
-    //         }
-    //     }
-
-
-
-    //     Backbone.sync(method, model, options);
-    // },
-    // defaults: {
-    //     id: "",
-    //     label: "",
-    //     color: ""
-    // },
-    idAttribute: "id"
+   idAttribute: "id",
+   defaults:{
+   		worker: App.currentWorker // nice 
+   }
 
 });
 
-//new DocumentCollection();
-
-
-// /* @end */
-
-var JobCollection =  Backbone.Collection.extend({			
-			url: '/Cintia/es/api/job', //'+App.clientId+'			
+var JobCollection =  Backbone.Collection.extend({	
+				
+			url: '/CintiaApp/es/api/job', //'+App.clientId+'			
 			sortByField: function(field, direction){
 	            sorted = _.sortBy(this.models, function(model){
 	                //return model.get(field)
@@ -128,7 +84,7 @@ var JobCollection =  Backbone.Collection.extend({
 	            
 			},
 		    initialize: function(){
-		    	
+		    	var that = this;
 		        this.fetch({
 		            success: this.fetchSuccess,
 		            error: this.fetchError
@@ -136,12 +92,13 @@ var JobCollection =  Backbone.Collection.extend({
 
 		        this.on('change', function (model, options) {
     				//console.log('collection:change', model, options);
-    				
+    				that.render();
     				
 				});
 		        this.on('change:name', function (model, newTitle, options) {
 		            this.sortByField('is_folder');
 		        });
+
 		        this.on('add', function (model, collection, options) {
 
 		          //  this.sortByField('is_folder');
@@ -172,13 +129,14 @@ var JobCollection =  Backbone.Collection.extend({
 		        // });
 		    },
 		    render: function(){
-
- 				var source  = document.getElementById("collection-template").innerHTML;
-				var template = Handlebars.compile(source);
+console.log('Rendering Collection');
+ 				
+				var template = Handlebars.compile(App.Templates['collection']);
 				var context = this.toJSON(); //{title: "My New Post", body: "This is my first post!"};
 				console.log("render",context);
 				var html    = template({collection:context});
-				$('#app').html(html);
+				$('#nav-mobile').html(html);
+
 		    },
 		    fetchSuccess: function (collection, response) {
 		    	// Initial sort
@@ -200,12 +158,15 @@ var JobCollection =  Backbone.Collection.extend({
 		
 
 var JobView = Backbone.View.extend({	
+	id: null,
+	start_date: null,
+	end_date: null,
 	initialize: function(){
 
 	},
 	events:{
 		'click .js-play-job': 'play',
-		'click .js-close-job': 'close',
+		'click .js-close-job': 'stop',
 
 	},
 	play: function(e){
@@ -213,28 +174,51 @@ var JobView = Backbone.View.extend({
 		$('.js-play-job',this.el).addClass("hidden");
 		$('.js-close-job',this.el).removeClass("hidden");
 		$('.progress',this.el).removeClass("hidden");
-
+		this.start_date = moment();
 	},
-	close: function(e){
+	stop: function(e){
 		e.preventDefault();
-		this.resetView();
+		e.stopPropagation();
+		if (confirm('Això donarà la tasca per acabada. Estàs segur?')){
+			this.end_date = moment();
+			this.resetView();
+			this.save();
+			
+		}
 	},
 	render: function(id){
-		var source  = document.getElementById("job-template").innerHTML;
-		var template = Handlebars.compile(source);
-		var context = {name:"X"}; //{title: "My New Post", body: "This is my first post!"};
-		console.log("render",context);
-		var html    = template({collection:context});
+		this.id = id;		
+		var that = this;
+		var template = Handlebars.compile(App.Templates['job']);
+		var model = App.Collections.jobs.get(this.id);
+
+		var context = model.toJSON();		
+		var html    = template(context);
 		$('#app').html(html);
-
-		// Clock
 		
-
+		// Clock		
 	},
 	resetView: function(){
 		$('.js-play-job').removeClass("hidden");
 		$('.js-close-job',this.el).addClass("hidden");
 		$('.progress',this.el).addClass("hidden");
+	},
+	save: function(){
+		var data = {
+			
+			start_date: this.start_date.format('Y-m-d H:mm:ss'),
+			end_date: this.end_date.format('Y-m-d H:mm:ss'),
+			elapsedDuration: moment.duration(moment().diff(this.start_date)).asMinutes(),
+			job: this.id
+		};
+
+		$('#message').html(moment.duration(moment().diff(this.start_date)).asMinutes()+' minuts');
+
+
+
+		console.log('save',data);
+		var activity = new Activity(data);
+		activity.save();
 	}
 });
 
@@ -242,36 +226,25 @@ var JobCollectionView = Backbone.View.extend({
 	initialize: function() {
 		var self = this;
 		this.render();
-
 	},
 	render: function(){
-		App.Collections.jobs = new JobCollection();
+		
 	},
-
 	events: {		
 		'click .collection-item': 'showJob',		
 	},
 	showJob: function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		id = $(e.target).attr("id");
+		var id = $(e.target).attr("id");
 		console.log("Opening job",id);
 		var job_view = new JobView({
     		el:$('#app')
 		});
-
 		job_view.render(id);
-	}
-	
+		$('#nav-mobile').sidenav('close');
+	}	
 });
-
-
-
-
-
-
-
-
 
 
 $(document).ready(function(){
