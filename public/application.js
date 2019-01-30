@@ -7,20 +7,7 @@
 
 $ = jQuery;
 
-function toggleFullScreen() {
-  var doc = window.document;
-  var docEl = doc.documentElement;
 
-  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-    requestFullScreen.call(docEl);
-  }
-  else {
-    cancelFullScreen.call(doc);
-  }
-}
 
 var noSleep = new NoSleep();
 
@@ -33,18 +20,18 @@ var App = {
 	clientId: 1,
 	Views: {},
 	init: function(){
+		var self = this;
 		this.Collections.jobs = new JobCollection();
-		this.Templates['job'] = document.getElementById("job-template").innerHTML;
-		this.Templates['collection'] = document.getElementById("collection-template").innerHTML;
-		this.Templates['header'] = document.getElementById("header-template").innerHTML;
+		this.Templates['job'] = Handlebars.compile(document.getElementById("job-template").innerHTML);
+		this.Templates['collection'] = Handlebars.compile(document.getElementById("collection-template").innerHTML);
+		this.Templates['header'] = Handlebars.compile(document.getElementById("header-template").innerHTML);
 		
-
-		var template = Handlebars.compile(this.Templates['header']);
+		
 		var context = {button: "", title: "Benvingut", subheader: "Fes click a les 3 ralles per començar", "icon": ""}
 				
 				//$('.sidenav').sidenav('close');
 				
-		$('#app').html(template(context));
+		$('#app').html(this.Templates['header'](context));
 
 
 
@@ -55,16 +42,34 @@ var App = {
 		this.Views['job'] = new JobView({
     		el:$('#app')
 		});
-		toggleFullScreen();
+	
 
 		if ('serviceWorker' in navigator) {
-  // sw.js can literally be empty, but must exist
-  navigator.serviceWorker.register('/sw.js');
-}		
+  			// sw.js can literally be empty, but must exist
+  			navigator.serviceWorker.register('/CintiaApp/sw.js');
+		}		
 		
 		self.addEventListener('fetch', function(event){
 			console.log('Algo relacionado con el worker');
 		});
+
+
+		self.addEventListener('install', function(e) {
+		 e.waitUntil(
+		   caches.open('airhorner').then(function(cache) {
+		     return cache.addAll([
+		       '/',
+		       '/index.html',
+		       '/index.html?homescreen=1',
+		       '/?homescreen=1',
+		       '/styles/main.css',
+		       '/scripts/main.min.js',
+		       '/sounds/airhorn.mp3'
+		     ]);
+		   })
+		 );
+		});
+
 	},
 	show: function(sectionId){
 		console.log('trying to show'+sectionId);
@@ -105,18 +110,9 @@ var JobCollection =  Backbone.Collection.extend({
 		            error: this.fetchError
 		        });		        
 		    },
-		    render: function(){
-				console.log('Rendering Collection'); 				
-				var template = Handlebars.compile(App.Templates['collection']);
-				var context = this.toJSON(); //{title: "My New Post", body: "This is my first post!"};
-				console.log("render",context);
-				var html    = template({collection:context});
-				$('#nav-mobile').html(html);
-
-		    },
 		    fetchSuccess: function (collection, response) {
-		        collection.render();
-
+		       // collection.render();
+		       App.Views['sidebar'].render();
 		    },
 		    fetchError: function (collection, response) {
 		        //alert("Fetch error");
@@ -154,20 +150,16 @@ var JobView = Backbone.View.extend({
 		e.stopPropagation();
 		if (confirm('Això donarà la tasca per acabada. Estàs segur?')){
 			this.end_date = moment();
-			this.resetView();
 			this.save();
+			this.resetView();
 			noSleep.disable();
 		}
 	},
 	render: function(id){
-		this.id = id;		
-		var that = this;
-		var template = Handlebars.compile(App.Templates['job']);
-		var model = App.Collections.jobs.get(this.id);
-
-		var context = model.toJSON();		
-		var html    = template(context);
-		$('#app').html(html);
+		this.start_date = this.end_date = null;
+		this.id = id;						
+		var model = App.Collections.jobs.get(this.id).toJSON();				
+		$('#app').html(App.Templates['job'](model));
 		
 		// Clock		
 	},
@@ -178,17 +170,13 @@ var JobView = Backbone.View.extend({
 	},
 	save: function(){
 		var data = {
-			
 			start_date: this.start_date.format('Y-m-d H:mm:ss'),
 			end_date: this.end_date.format('Y-m-d H:mm:ss'),
-			elapsedDuration: moment.duration(moment().diff(this.start_date)).asMinutes(),
+			elapsedDuration: moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2),
 			job: this.id
 		};
 
-		$('#message').html(moment.duration(moment().diff(this.start_date)).asMinutes()+' minuts');
-
-
-
+		$('#message').html(moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2)+' minuts');
 		App.saveActivity(data);
 		
 	}
@@ -198,10 +186,15 @@ var JobView = Backbone.View.extend({
 var JobCollectionView = Backbone.View.extend({	
 	initialize: function() {
 		var self = this;
-		this.render();
+		//this.render();
 	},
 	render: function(){
-		
+			console.log('Rendering Collection'); 				
+			
+			var context = App.Collections.jobs.toJSON(); //{title: "My New Post", body: "This is my first post!"};
+			console.log("render",context);
+			var html    = App.Templates['collection']({collection:context});
+			$('#nav-mobile').html(html);
 	},
 	events: {		
 		'click .collection-item': 'showJob',		
