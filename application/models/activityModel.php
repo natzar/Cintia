@@ -18,18 +18,20 @@ class activityModel extends ModelBase
 		public function add($params){
 			$client_id = $_SESSION['user']['client_id'];
 			$user_id = $_SESSION['user']['id'];
+			$hash = -1;
+
 			$consulta = $this->db->prepare("
 				INSERT INTO activity (client_id,hash,user_id,job_id,start,end,duration)
 				VALUES  (:client_id, :hash, :user_id, :job_id, :start, :end, :duration)");
 
 			$consulta->bindParam(":client_id",$client_id);
-			$consulta->bindParam(":hash",'-1');
+			$consulta->bindParam(":hash",$hash);
 			$consulta->bindParam(":user_id",$user_id);
-			$consulta->bindParam(":job_id",$params['job_id']);
+			$consulta->bindParam(":job_id",$params->job_id);
 
-			$consulta->bindParam(":start",$params['start']);
-			$consulta->bindParam(":end",$params['end']);
-			$consulta->bindParam(":duration",$params['duration']);
+			$consulta->bindParam(":start",$params->start);
+			$consulta->bindParam(":end",$params->end);
+			$consulta->bindParam(":duration",$params->duration);
 
 			$consulta->execute();
 			if ($consulta->rowCount() > 0) return true;

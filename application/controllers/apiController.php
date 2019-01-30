@@ -18,11 +18,12 @@ class apiController extends ControllerBase
 
 	}
 	public function activity(){
+		require "application/models/activityModel.php"; 
 		$data = json_decode(file_get_contents('php://input'));
-		echo json_encode($data);
+		
 		$activity = new activityModel();
 		$activity->add($data);
-		$data['success'] = true;
+		$data->success = true;
 		echo json_encode($data);
 
 	}

@@ -13,9 +13,9 @@ var App = {
 	Collections: {},
 	currentJob: null,
 	currentMachine: null,
-	currentWorker: 'Lucas',
+	currentWorker: 2,
 	Templates: {},
-	clientId: 1,
+	client_id: 1,
 	Views: {},
 	init: function(){
 		var self = this;
@@ -25,9 +25,8 @@ var App = {
 		this.Templates['header'] = Handlebars.compile(document.getElementById("header-template").innerHTML);
 		
 		
-		var context = {button: "", title: "Benvingut", subheader: "Fes click a les 3 ralles per començar", "icon": ""}
-				
-				//$('.sidenav').sidenav('close');
+		var context = {button: "", title: "Benvingut Lucas", subheader: "Fes click a les 3 ralles per començar", "icon": ""}
+								
 				
 		$('#app').html(this.Templates['header'](context));
 
@@ -76,8 +75,8 @@ var App = {
 		}
 	},
 	saveActivity: function(data){
-		data.worker = App.currentWorker;
-		data.clientId = App.clientId; // nice 
+		data.user_id = App.currentWorker;
+		data.client_id = App.client_id; // nice 
 		var activity = new Activity(data);
 		activity.save();
 	}
@@ -165,10 +164,10 @@ var JobView = Backbone.View.extend({
 	},
 	save: function(){
 		var data = {
-			start_date: this.start_date.format('Y-m-d H:mm:ss'),
-			end_date: this.end_date.format('Y-m-d H:mm:ss'),
-			elapsedDuration: moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2),
-			job: this.id
+			start: this.start_date.format('YYYY-MM-DD H:mm:ss'),
+			end: this.end_date.format('YYYY-MM-DD H:mm:ss'),
+			duration: moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2),
+			job_id: this.id
 		};
 
 		$('#message').html(moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2)+' minuts');

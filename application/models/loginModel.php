@@ -67,7 +67,7 @@ class loginModel extends ModelBase
 
   		        $this->loginSuccess();				
         	} else{         	
-        	   $c = $this->db->prepare('SELECT usersId,email,password FROM '.$config->get('db_prefix').'users where email = :user and password = :password limit 1');
+        	   $c = $this->db->prepare('SELECT id,email,password FROM '.$config->get('db_prefix').'users where email = :user and password = :password limit 1');
         	   $user = $user;
         	   $pass = sha1($pass);
         	   echo $pass;
@@ -77,10 +77,10 @@ class loginModel extends ModelBase
         	   $r = $c->fetch();
 
 
-        	   if (!isset($r['usersId'])){
+        	   if (!isset($r['id'])){
         	       $this->loginError();
         	   }else{
-        	       $this->loginSuccess($r['usersId']);
+        	       $this->loginSuccess($r['id']);
         	   }
         	}				
         } else {

@@ -44,7 +44,7 @@ class usersModel extends ModelBase
 		public function getByUsersId($id){
 
 
-				$consulta = $this->db->prepare("SELECT * FROM users  WHERE users.usersId='$id' limit 1");
+				$consulta = $this->db->prepare("SELECT * FROM users  WHERE users.id='$id' limit 1");
 				$consulta->execute();
 				$aux2 =  $consulta->fetch();
 
