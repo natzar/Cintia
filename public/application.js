@@ -56,7 +56,15 @@ var App = {
     		el:$('#app')
 		});
 		toggleFullScreen();
+
+		if ('serviceWorker' in navigator) {
+  // sw.js can literally be empty, but must exist
+  navigator.serviceWorker.register('/sw.js');
+}		
 		
+		self.addEventListener('fetch', function(event){
+			console.log('Algo relacionado con el worker');
+		});
 	},
 	show: function(sectionId){
 		console.log('trying to show'+sectionId);
@@ -89,69 +97,16 @@ var Activity = Backbone.Model.extend({
 });
 
 var JobCollection =  Backbone.Collection.extend({	
-				
 			url: '/CintiaApp/es/api/job', //'+App.clientId+'			
-			sortByField: function(field, direction){
-	            sorted = _.sortBy(this.models, function(model){
-	                //return model.get(field)
-	                return (-1*model.get(field))+'-'+model.get('name');
-	            });
-
-	            if(direction === 'DESC'){
-	                sorted = sorted.reverse()
-	            }
-
-	            this.models = sorted;
-	            
-			},
 		    initialize: function(){
 		    	var that = this;
 		        this.fetch({
 		            success: this.fetchSuccess,
 		            error: this.fetchError
 		        });		        
-
-		        this.on('change', function (model, options) {
-    				//console.log('collection:change', model, options);
-    				that.render();
-    				
-				});
-		        this.on('change:name', function (model, newTitle, options) {
-		            this.sortByField('is_folder');
-		        });
-
-		        this.on('add', function (model, collection, options) {
-
-		          //  this.sortByField('is_folder');
-		            // if (model.attributes.is_folder < 1){
-		            // 	self.stats.total_documents++;
-		            // 	self.stats.total_gb += parseInt(model.attributes['size']);
-		            // 	self.refreshStats();
-		            // }
-
-		     //        var parent_folder = null;
-							// if (item.is_folder == 1){
-							// 	parent_folder = self.tree.get(item.id);
-		     					
-							// }else{
-							// 	parent_folder = self.tree.get(item.parent_id);
-							// }
-							// self.refreshFolderStats(parent_folder);
-
-		            // this.sortByField('is_folder');
-    				
-		        });
-		        // this.on('remove', function (model, collection, options) {		          
-		        //     if (model.attributes.is_folder < 1){
-		        //     	self.stats.total_documents--;
-		        //     	self.stats.total_gb -= parseInt(model.attributes['size']);
-		        //     	self.refreshStats();
-		        //     }
-		        // });
 		    },
 		    render: function(){
-console.log('Rendering Collection');
- 				
+				console.log('Rendering Collection'); 				
 				var template = Handlebars.compile(App.Templates['collection']);
 				var context = this.toJSON(); //{title: "My New Post", body: "This is my first post!"};
 				console.log("render",context);
@@ -160,13 +115,6 @@ console.log('Rendering Collection');
 
 		    },
 		    fetchSuccess: function (collection, response) {
-		    	// Initial sort
-		    	// this.models =  _.sortBy(this.models, function(model){
-			    //             return (-1*model.get('is_folder'))+'-'+model.get('name');
-			    // });			
-			    
-
-
 		        collection.render();
 
 		    },
