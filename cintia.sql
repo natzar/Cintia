@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-01-2019 a las 23:43:25
--- Versión del servidor: 10.1.16-MariaDB
--- Versión de PHP: 5.5.38
+-- Tiempo de generación: 30-01-2019 a las 17:39:56
+-- Versión del servidor: 10.1.28-MariaDB
+-- Versión de PHP: 5.6.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,281 +25,155 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `activity`
+--
+
+CREATE TABLE `activity` (
+  `activityId` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `hash` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `job_id` int(11) NOT NULL,
+  `tags` varchar(255) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
+  `duration` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `activity`
+--
+
+INSERT INTO `activity` (`activityId`, `client_id`, `hash`, `user_id`, `job_id`, `tags`, `start`, `end`, `duration`) VALUES
+(3, 2, '-1', 2, 3, '', '2019-01-30 16:56:59', '2019-01-30 16:57:03', 0.05),
+(4, 2, '-1', 2, 2, '', '2019-01-30 17:13:39', '2019-01-30 17:13:41', 0.03);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `clients`
 --
 
 CREATE TABLE `clients` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `clientsId` int(11) NOT NULL,
+  `logo` varchar(255) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `clients`
 --
 
-INSERT INTO `clients` (`id`, `name`) VALUES
-(1, ''),
-(2, ''),
-(3, ''),
-(4, ''),
-(5, ''),
-(6, ''),
-(7, ''),
-(8, ''),
-(9, ''),
-(10, ''),
-(11, ''),
-(12, ''),
-(13, ''),
-(14, ''),
-(15, ''),
-(16, ''),
-(17, ''),
-(18, ''),
-(19, ''),
-(20, ''),
-(21, ''),
-(22, ''),
-(23, ''),
-(24, ''),
-(25, ''),
-(26, ''),
-(27, ''),
-(28, ''),
-(29, ''),
-(30, ''),
-(31, ''),
-(32, ''),
-(33, ''),
-(34, ''),
-(35, ''),
-(36, ''),
-(37, ''),
-(38, ''),
-(39, ''),
-(40, ''),
-(41, ''),
-(42, ''),
-(43, ''),
-(44, ''),
-(45, ''),
-(46, ''),
-(47, ''),
-(48, ''),
-(49, ''),
-(50, ''),
-(51, ''),
-(52, ''),
-(53, ''),
-(54, ''),
-(55, ''),
-(56, ''),
-(57, ''),
-(58, ''),
-(59, ''),
-(60, '');
+INSERT INTO `clients` (`clientsId`, `logo`, `name`, `created`, `updated`) VALUES
+(1, '', 'Demo', '2019-01-30 13:04:51', '2019-01-30 13:14:13'),
+(2, '', 'Pepa Paper', '2019-01-30 13:04:51', '2019-01-30 13:14:18');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `entries`
+-- Estructura de tabla para la tabla `jobs`
 --
 
-CREATE TABLE `entries` (
-  `id` int(11) NOT NULL,
-  `client_id` int(11) NOT NULL,
-  `hash` varchar(255) NOT NULL,
-  `tags` varchar(255) NOT NULL,
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `entries`
---
-
-INSERT INTO `entries` (`id`, `client_id`, `hash`, `tags`, `start`, `end`) VALUES
-(1, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(10, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(11, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(12, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(14, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(15, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(17, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(18, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(19, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(20, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(21, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(22, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(23, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(24, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(25, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(26, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(27, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(28, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(29, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(30, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(31, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(32, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(33, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(34, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(35, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(36, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(37, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(38, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(39, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(40, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(41, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(42, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(43, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(44, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(45, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(46, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(47, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(48, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(49, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(50, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(51, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(52, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(53, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(54, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(55, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(56, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(57, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(58, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(59, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(60, 0, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tags`
---
-
-CREATE TABLE `tags` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `jobs` (
+  `jobsId` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL,
-  `tag` varchar(50) NOT NULL
+  `name` varchar(50) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `tags`
+-- Volcado de datos para la tabla `jobs`
 --
 
-INSERT INTO `tags` (`id`, `client_id`, `parent_id`, `tag`) VALUES
-(1, 0, 0, ''),
-(2, 0, 0, ''),
-(3, 0, 0, ''),
-(4, 0, 0, ''),
-(5, 0, 0, ''),
-(6, 0, 0, ''),
-(7, 0, 0, ''),
-(8, 0, 0, ''),
-(9, 0, 0, ''),
-(10, 0, 0, ''),
-(11, 0, 0, ''),
-(12, 0, 0, ''),
-(13, 0, 0, ''),
-(14, 0, 0, ''),
-(15, 0, 0, ''),
-(16, 0, 0, ''),
-(17, 0, 0, ''),
-(18, 0, 0, ''),
-(19, 0, 0, ''),
-(20, 0, 0, ''),
-(21, 0, 0, ''),
-(22, 0, 0, ''),
-(23, 0, 0, ''),
-(24, 0, 0, ''),
-(25, 0, 0, ''),
-(26, 0, 0, ''),
-(27, 0, 0, ''),
-(28, 0, 0, ''),
-(29, 0, 0, ''),
-(30, 0, 0, ''),
-(31, 0, 0, ''),
-(32, 0, 0, ''),
-(33, 0, 0, ''),
-(34, 0, 0, ''),
-(35, 0, 0, ''),
-(36, 0, 0, ''),
-(37, 0, 0, ''),
-(38, 0, 0, ''),
-(39, 0, 0, ''),
-(40, 0, 0, ''),
-(41, 0, 0, ''),
-(42, 0, 0, ''),
-(43, 0, 0, ''),
-(44, 0, 0, ''),
-(45, 0, 0, ''),
-(46, 0, 0, ''),
-(47, 0, 0, ''),
-(48, 0, 0, ''),
-(49, 0, 0, ''),
-(50, 0, 0, ''),
-(51, 0, 0, ''),
-(52, 0, 0, ''),
-(53, 0, 0, ''),
-(54, 0, 0, ''),
-(55, 0, 0, ''),
-(56, 0, 0, ''),
-(57, 0, 0, ''),
-(58, 0, 0, ''),
-(59, 0, 0, ''),
-(60, 0, 0, '');
+INSERT INTO `jobs` (`jobsId`, `client_id`, `parent_id`, `name`, `created`, `updated`) VALUES
+(1, 2, 0, 'Enganxar', '2019-01-30 13:05:31', '2019-01-30 13:15:06'),
+(2, 2, 0, 'Tallar', '2019-01-30 13:05:31', '2019-01-30 13:15:12'),
+(3, 2, 0, 'Enmagatzemar', '2019-01-30 13:05:31', '2019-01-30 13:15:23');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `usersId` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`usersId`, `client_id`, `name`, `password`, `email`, `created`, `updated`) VALUES
+(1, 1, 'Lucas', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'betolopezayesa@gmail.com', '2019-01-30 17:18:52', '2019-01-30 17:18:52');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
+-- Indices de la tabla `activity`
+--
+ALTER TABLE `activity`
+  ADD PRIMARY KEY (`activityId`);
+
+--
 -- Indices de la tabla `clients`
 --
 ALTER TABLE `clients`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`clientsId`);
 
 --
--- Indices de la tabla `entries`
+-- Indices de la tabla `jobs`
 --
-ALTER TABLE `entries`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`jobsId`);
 
 --
--- Indices de la tabla `tags`
+-- Indices de la tabla `users`
 --
-ALTER TABLE `tags`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`usersId`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
+-- AUTO_INCREMENT de la tabla `activity`
+--
+ALTER TABLE `activity`
+  MODIFY `activityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `clientsId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
 --
--- AUTO_INCREMENT de la tabla `entries`
+-- AUTO_INCREMENT de la tabla `jobs`
 --
-ALTER TABLE `entries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+ALTER TABLE `jobs`
+  MODIFY `jobsId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
 --
--- AUTO_INCREMENT de la tabla `tags`
+-- AUTO_INCREMENT de la tabla `users`
 --
-ALTER TABLE `tags`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+ALTER TABLE `users`
+  MODIFY `usersId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
