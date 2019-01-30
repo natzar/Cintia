@@ -9,12 +9,11 @@ class apiController extends ControllerBase
 	}
 	public function job(){
 		
+		require "application/models/jobModel.php"; 
+		$jobs = new jobModel();
 
-		echo json_encode(array(
-			array("id" => 1, "name" => "Encuadernar", "badge" => "OK", "href" => "#"),
-			array("id" => 2,"name" => "Enganxar", "badge" => "OK", "href" => "#"),
-			array("id" => 3,"name" => "Tallar", "badge" => "OK", "href" => "#"),
-		));	
+
+		echo json_encode($jobs->getAll());	
 
 	}
 	public function activity(){

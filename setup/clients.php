@@ -1,13 +1,13 @@
 <?
-  $field_id = "id";
+  $field_id = "clientsId";
 
         $table_label = "clients";
-        $default_order = "id ASC";
-        $fields= array("id","name");
+        $default_order = "clientsId ASC";
+        $fields= array("name");
         
-        $fields_labels= array("id","name");
+        $fields_labels= array("name");
         
-        $fields_types=array("number","literal");
+        $fields_types=array("literal");
         
         
         
