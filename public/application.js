@@ -7,8 +7,6 @@
 
 $ = jQuery;
 
-
-
 var noSleep = new NoSleep();
 
 var App = {
@@ -33,9 +31,7 @@ var App = {
 				
 		$('#app').html(this.Templates['header'](context));
 
-
-
-		this.Views['sidebar'] = new JobCollectionView({
+		this.Views['sidebar'] = new SidebarView({
     		el:$('#nav-mobile')
 		});
 
@@ -44,17 +40,16 @@ var App = {
 		});
 	
 
-		if ('serviceWorker' in navigator) {
-  			// sw.js can literally be empty, but must exist
+		if ('serviceWorker' in navigator) {  			
   			navigator.serviceWorker.register('/CintiaApp/sw.js');
 		}		
 		
-		self.addEventListener('fetch', function(event){
+		document.addEventListener('fetch', function(event){
 			console.log('Algo relacionado con el worker');
 		});
 
 
-		self.addEventListener('install', function(e) {
+		document.addEventListener('install', function(e) {
 		 e.waitUntil(
 		   caches.open('airhorner').then(function(cache) {
 		     return cache.addAll([
@@ -183,7 +178,7 @@ var JobView = Backbone.View.extend({
 });
 
 
-var JobCollectionView = Backbone.View.extend({	
+var SidebarView = Backbone.View.extend({	
 	initialize: function() {
 		var self = this;
 		//this.render();
@@ -214,9 +209,4 @@ var JobCollectionView = Backbone.View.extend({
 $(document).ready(function(){
 	App.init();
 });
-
-
-
-
-
 
