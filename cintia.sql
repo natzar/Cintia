@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 31-01-2019 a las 11:33:31
+-- Tiempo de generación: 31-01-2019 a las 11:53:31
 -- Versión del servidor: 10.1.28-MariaDB
 -- Versión de PHP: 5.6.32
 
@@ -45,8 +45,10 @@ CREATE TABLE `activity` (
 --
 
 INSERT INTO `activity` (`activityId`, `clientsId`, `hash`, `usersId`, `jobsId`, `tags`, `start`, `end`, `duration`) VALUES
-(3, 2, '-1', 2, 3, '', '2019-01-30 16:56:59', '2019-01-30 16:57:03', 0.05),
-(4, 2, '-1', 2, 2, '', '2019-01-30 17:13:39', '2019-01-30 17:13:41', 0.03);
+(3, 2, '-1', 3, 3, '', '2019-01-30 16:56:59', '2019-01-30 16:57:03', 0.05),
+(4, 2, '-1', 3, 2, '', '2019-01-30 17:13:39', '2019-01-30 17:13:41', 0.03),
+(5, 2, '-1', 3, 62, '', '2019-01-31 11:49:12', '2019-01-31 11:49:14', 0.03),
+(7, 1, '-1', 3, 62, '', '2019-01-31 11:51:39', '2019-01-31 11:51:41', 0.04);
 
 -- --------------------------------------------------------
 
@@ -156,7 +158,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `activityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `activityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `clients`
