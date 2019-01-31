@@ -90,7 +90,7 @@
 
 	$config->set('combo_add',0); 	/* Toggle: Plus sign to add new option on Combo field */
 	$config->set('delete_permission',1); /* Toggle: Show delete icon in each table row */
-	$config->set('developer_mode',true); 	/* Toggle: DEVELOPER MODE, show session and params values */
+	$config->set('developer_mode',false); 	/* Toggle: DEVELOPER MODE, show session and params values */
 
 	$config->set('version',2); 	/* Constants */
 	$config->set('updated','12/3/2015'); 	/* Constants */

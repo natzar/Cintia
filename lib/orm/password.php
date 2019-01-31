@@ -7,7 +7,7 @@ final class password extends field{
 	}
 	function bake_field (){
 	
-			return "<input type=\"text\" cols=\"120\" id=\"".$this->fieldname."\" name=\"".$this->value."\" value=\"\"><BR>Se sobre-escribir&aacute; el password anterior."; 
+			return "<input type=\"text\" cols=\"120\" id=\"".$this->fieldname."\" name=\"".$this->value."\" class=\"form-control\" value=\"\"><BR>Se sobre-escribir&aacute; el password anterior."; 
 					
 					
 					

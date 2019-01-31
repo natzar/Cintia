@@ -8,7 +8,7 @@ final class email extends field{
 		return $this->value;
 	}
 	function bake_field (){
-		return "<input  type=\"text\" class='span3' name=\"".$this->fieldname."\" id=\"".$this->fieldname."\" value=\"".trim($this->value)."\">";
+		return "<input  type=\"text\" class='form-control' name=\"".$this->fieldname."\" id=\"".$this->fieldname."\" value=\"".trim($this->value)."\">";
 
 		
 

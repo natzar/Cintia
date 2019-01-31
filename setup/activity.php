@@ -1,12 +1,12 @@
 <?
         
-        $table_label = "entries";
-        $default_order = "id ASC";
-        $fields= array("id","client_id","hash","tags","start","end");
+        $table_label = "Excel";
+        $default_order = "activityId ASC";
+        $fields= array("usersId","jobsId","start","end","duration");
         
-        $fields_labels= array("id","client id","hash","tags","start","end");
+        $fields_labels= array("Usuari","Tasca","Comença","Acaba","minuts");
         
-        $fields_types=array("number","number","literal","literal","fecha","fecha");
+        $fields_types=array("combo","combo","fechahora","fechahora","number");
         
         
         

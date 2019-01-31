@@ -13,10 +13,15 @@
 unset($_SESSION['errors']);
 endif; ?>
          
-<a class="btn btn-success" style="display:inline-block"  href="admin/form/<?= $table ?>"><i class="glyphicon glyphicon-floppy-open"></i> <?=ADDNEW?></a>
+<a class="btn btn-primary" style="display:inline-block"  href="admin/form/<?= $table ?>"><i class="glyphicon glyphicon-floppy-open"></i> <?=ADDNEW?></a>
 
 <a class="btn btn-primary" style="display:inline-block;"  href="admin/search/<?= $table ?>"><i class="glyphicon glyphicon-search"></i> <?=SEARCH?></a>
 
+<? if ($table == "activity"): ?>
+
+<a class="btn btn-success" style="display:inline-block;"  href="admin/export/<?= $table ?>"><i class="glyphicon glyphicon-download"></i> Exportar </a>
+
+<? endif; ?>
 <br><br>
 
 
