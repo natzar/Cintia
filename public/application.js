@@ -13,7 +13,7 @@ var App = {
 	Collections: {},
 	currentJob: null,
 	currentMachine: null,
-	currentWorker: 2,
+	currentWorker: 3,
 	Templates: {},
 	client_id: 1,
 	Views: {},
@@ -92,10 +92,24 @@ var Activity = Backbone.Model.extend({
         'update':'/documents/edit/',
         'delete':'/documents/delete/'
     },
-   idAttribute: "id",
+   idAttribute: "activityId",
 });
 
+var JobModel = Backbone.Model.extend({
+    url:'/CintiaApp/en/api/jobs',
+    //urlRoot:'/'+App.clientId+'/documents',
+	methodToURL:{    	
+        'read':'/documents/read',
+        'create':'/CintiaApp/en/api/activity',
+        'update':'/documents/edit/',
+        'delete':'/documents/delete/'
+    },
+   idAttribute: "jobsId",
+});
+
+
 var JobCollection =  Backbone.Collection.extend({	
+		model: JobModel,
 			url: '/CintiaApp/es/api/job', //'+App.clientId+'			
 		    initialize: function(){
 		    	var that = this;

@@ -22,7 +22,7 @@
 
 <script id="collection-template" type="text/x-handlebars-template">
   {{#each collection}}
-  <li><a id="{{id}}" class="collection-item" href="{{href}}">{{#if badge}}<span class="badge">{{badge}}</span>{{/if}} {{name}}</a></li>
+  <li><a id="{{jobsId}}" class="collection-item" href="{{href}}">{{#if badge}}<span class="badge">{{badge}}</span>{{/if}} {{name}}</a></li>
 {{/each}}
 </script>
 

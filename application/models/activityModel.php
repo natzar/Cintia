@@ -21,7 +21,7 @@ class activityModel extends ModelBase
 			$hash = -1;
 
 			$consulta = $this->db->prepare("
-				INSERT INTO activity (client_id,hash,user_id,job_id,start,end,duration)
+				INSERT INTO activity (clientsId,hash,usersId,jobsId,start,end,duration)
 				VALUES  (:client_id, :hash, :user_id, :job_id, :start, :end, :duration)");
 
 			$consulta->bindParam(":client_id",$client_id);

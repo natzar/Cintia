@@ -3,7 +3,7 @@
     <div class="nav-wrapper container">
       <a id="logo-container" href="#" class="brand-logo">Cintia</a>
 
-      <ul class="right hide-on-med-and-down">
+      <ul class="right">
         <li><div id="clock"></div></li>        
       </ul>
 

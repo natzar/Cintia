@@ -34,8 +34,9 @@ final class combo extends field{
         
         $consulta = $this->db->prepare("SELECT * from ".$this->config->get('db_prefix').$tabla." where ".$tabla."Id='$valor_en_indice' limit 1" );
         $consulta->execute();
-      	$row = $consulta->fetch(PDO::FETCH_NUM);
+      	$row = $consulta->fetch();
 
+      	return $row['name'];
 
         if ($tabla == 'clientes'){
             return $row[3];
