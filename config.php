@@ -28,13 +28,14 @@
 	/* Relative path to App-Root - http://www.yourserver.com/RELATIVE_PATH/config.php
 		If you are in root just leave it like "/"
 	----------------------------------------------------------------------------------------*/	   
-	$RELATIVE_PATH = '/CintiaApp/';
+	$RELATIVE_PATH = '/';
+	
 		
 	/* Installation Step 1 - DB */
-	$config->set('dbhost', 'localhost');
-	$config->set('dbname', 'cintia');
-	$config->set('dbuser', 'root');
-	$config->set('dbpass', 'test');
+	$config->set('dbhost', 'internal-db.s178119.gridserver.com');
+	$config->set('dbname', 'db178119_betoayesa');
+	$config->set('dbuser', 'db178119');
+	$config->set('dbpass', 'tryagain22');
 	$config->set('db_prefix','');
 	$config->set('tabla_default','noticias');
     $config->set('db_support',true);

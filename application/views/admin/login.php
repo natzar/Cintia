@@ -21,7 +21,7 @@
 <div style="width:320px;">
 	<div style="text-align:left;">
 		<center><h3><?= $base_title ?></h3>
-	<form class="" style="padding:40px;border:2px solid white" action="<?= $base_url ?>admin/do_login" method="post">
+	<form class="" style="padding:40px;" action="<?= $base_url ?>admin/do_login" method="post">
 
 			
 			<? if (isset($_SESSION['error']) and !empty($_SESSION['error'])) {?>
@@ -43,7 +43,7 @@
 
 	</form>
 	</center>
-	Version: <?= $config->get('version') ?> (Update: <?= $config->get('updated') ?>)
+	
 			</div>
 			
 
@@ -55,7 +55,7 @@
 <script type="text/javascript"> 
 			$(document).ready(function(){
 				$('#background').smartBackgroundResize({
-					image: '<?= $base_url ?>/public/admin/img/background.jpg' // relative or absolute path to background image file				
+					image: 'https://images.unsplash.com/photo-1547993224-89175e74dd68?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80' // relative or absolute path to background image file				
 				});
 			});
 		</script>		

@@ -1,61 +1,47 @@
+<main>
+    <center>
 
-<div id="app"></div>
+      <div class="section"></div>
+      <div class="section"></div>
 
- 
-<script id="header-template" type="text/x-handlebars-template">
-<div class="container">
-	<div class="section">
-	<!--   Icon Section   flash_on -->
-		<div class="row">
-			<div class="col s12 ">
-				<div class="icon-block">
-					<h2 class="center light-blue-text"><i class="material-icons">{{icon}}</i></h2>
-					<h5 class="center">{{title}}</h5>
-					<p class="light center">{{subheader}}</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+      <div class="container">
+        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
-</script>
+          <form class="col s12" method="post" action="/es/login/doLogin">
+            <div class='row'>
+              <div class='col s12'>
+              </div>
+            </div>
 
-<script id="collection-template" type="text/x-handlebars-template">
-  {{#each collection}}
-  <li><a id="{{jobsId}}" class="collection-item" href="{{href}}">{{#if badge}}<span class="badge">{{badge}}</span>{{/if}} {{name}}</a></li>
-{{/each}}
-</script>
+            <div class='row'>
+              <div class='input-field col s12'>
+                <input class='validate' type='email' name='email' id='email' />
+                <label for='email'>Enter your email</label>
+              </div>
+            </div>
 
-<script id="job-template" type="text/x-handlebars-template">
-  
-<div class="container">
-	<div class="section">
-	<!--   Icon Section   flash_on -->
-		<div class="row">
-			<div class="col s12 ">
-				<div class="icon-block">
-					<!--<h2 class="center light-blue-text"><i class="material-icons large">alarm</i></h2>-->
-					<h5 class="center">{{name}}</h5>
-					<p id="message" class="light center"></p>
+            <div class='row'>
+              <div class='input-field col s12'>
+                <input class='validate' type='password' name='password' id='password' />
+                <label for='password'>Enter your password</label>
+              </div>
+              <label style='float: right;'>
+								<a class='pink-text' href='#!'><b>Forgot Password?</b></a>
+							</label>
+            </div>
 
-				</div>
-			</div>
-			<div class="col s12 center centered">
-				
-				<div class="progress hidden">
-      				<div class="indeterminate"></div>
-  				</div>
-  				<div class="js-time-passed"></div>
-				
-				<a class="js-play-job" href="#"><i class=" material-icons large huge massive">play_circle_outline</i></a>
-				<a class="js-close-job hidden" href="#"><i class="material-icons large ">stop</i></a>
+            <br />
+            <center>
+              <div class='row'>
+                <button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
+              </div>
+            </center>
+          </form>
+        </div>
+      </div>
 
-				
-			</div>
-		</div>
-	</div>
-</div>
-  
+    </center>
 
-
-</script>
+    <div class="section"></div>
+    <div class="section"></div>
+  </main>

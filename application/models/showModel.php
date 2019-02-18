@@ -112,7 +112,9 @@ class showModel extends ModelBase
       
       
 		if (isset($group_by) and !empty($group_by)) $order .= ' GROUP BY '.$group_by.' ';  
-        $consulta = $this->db->prepare('SELECT * FROM '.$table_aux.' order by '.$order);
+        $consulta = $this->db->prepare('SELECT * FROM '.$table_aux.' WHERE clientsId = :clientsId order by '.$order);
+        $clientsId = $_SESSION['user']['clientsId'];
+        $consulta->bindParam(":clientsId",$clientsId);
         $consulta->execute();
         $array_return = array();
         

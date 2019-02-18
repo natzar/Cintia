@@ -7,6 +7,16 @@ class apiController extends ControllerBase
 
 
 	}
+	public function order(){
+	   
+		require "application/models/orderModel.php"; 
+		$orders = new orderModel();
+
+
+		echo json_encode($orders->getAll());
+		
+	}
+	
 	public function job(){
 		
 		require "application/models/jobModel.php"; 

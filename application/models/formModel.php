@@ -27,7 +27,8 @@ class formModel extends ModelBase
     			$add_info_form .= "'".$field_aux->exec_add()."',";					
     		}
     	}
-    	$info = substr($add_info_form,0,strlen($add_info_form) - 1);
+    	$fields[] ="clientsId";
+    	$info = $add_info_form.$_SESSION['user']['clientsId'];//substr($add_info_form,0,strlen($add_info_form) - 1);
     	$consulta = $this->db->prepare("INSERT INTO ".$table." (".implode(",",$fields).") VALUES ($info)");
 
         $consulta->execute();
@@ -69,7 +70,11 @@ class formModel extends ModelBase
         		}
         	}
         			
-        	$info = substr($edit_info_form,0,strlen($edit_info_form) - 1);
+// Add CLIENTID TO EVERYTHING
+        	$info = $edit_info_form." clientsId='".$_SESSION['user']['clientsId']."'";
+    
+        //	$info = substr($edit_info_form,0,strlen($edit_info_form) - 1);
+    
         	$table_no_prefix = str_replace($this->config->get('db_prefix'),"",$table);
        		$consulta = $this->db->prepare("UPDATE ".$table." set  $info   where ".$table_no_prefix."Id='".$rid."'");
       	//	echo "UPDATE ".$table." set  $info   where id='".$rid."'";

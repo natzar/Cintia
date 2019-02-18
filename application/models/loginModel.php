@@ -9,44 +9,13 @@ class loginModel extends ModelBase
   		header ("location: ".$config->get('base_url'));
         exit(0);
     }
-     function loginSuccess($usersId = -1){
-        $config = Config::singleton();
-        if ($usersId == -1){
-            $_SESSION['initiated_admin'] = 1;
-
-        }else{
-            
-            $_SESSION['initiated'] = true;
-            include "application/models/usersModel.php";    
-            $users = new usersModel();
-            $user = $users->getByUsersId($usersId);
-            $area = $user['area'];
-            if($area == 2){
-                include_once "application/models/divecentersModel.php";
-                $dc = new divecentersModel();
-                $dc = $dc->getByUsersId($user['usersId']);
-                
-                $_SESSION['author']= $dc['title'];
-                $_SESSION['author_image']= $dc['featImage'];
-                
-
-            }elseif($area==3){
-                include_once "application/models/diversModel.php";            
-                $dc = new diversModel();
-                $dc = $dc->getByUsersId($user['usersId']);
-                
-                $_SESSION['author']= $dc['title'];
-                $_SESSION['author_image']= $dc['imagen1'];
-            }    
-
-
-
-        }
-
-		$_SESSION['usersId'] = $usersId; 
+     function loginSuccess($user){
+        $config = Config::singleton();            
+        $_SESSION['initiated'] = true;        
+        $_SESSION['user']['clientsId'] = $user['clientsId'];
+        $_SESSION['user']['name'] = $user['name'];
         $_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT'].$config->get('base_title'));	
-
-       header ("location: ".$config->get('base_url').'admin');
+        header ("location: ".$config->get('base_url').'admin/table/activity');
     }
     function loginError(){
         	$config = Config::singleton();
@@ -55,37 +24,54 @@ class loginModel extends ModelBase
     //    print_r($_SESSION);
         header ("location: ".$_SESSION['return_url']);
     }
-	public function login($user,$pass)
+	public function login($user,$pass,$admin = false)
 	{   
 	    	
     	$config = Config::singleton();
         if (!isset($_SESSION['login_attemp'])) $_SESSION['login_attemp'] = 1;
 		// Uncheck security
-		$_SESSION['login_attemp'] = 1;
-        if ($_SESSION['login_attemp'] < 4){        	
-        	if ($user == $config->get('validUser') and $pass== $config->get('validPass')){
 
-  		        $this->loginSuccess();				
-        	} else{         	
-        	   $c = $this->db->prepare('SELECT id,email,password FROM '.$config->get('db_prefix').'users where email = :user and password = :password limit 1');
-        	   $user = $user;
-        	   $pass = sha1($pass);
-        	   echo $pass;
-        	   $c->bindParam(':user',$user,PDO::PARAM_STR);
-        	   $c->bindParam(':password',$pass);        	   
-        	   $c->execute();
-        	   $r = $c->fetch();
+	 if ($_SESSION['login_attemp'] < 4){        	
+		if ($admin){ // ADMIN USER       	
+    	   $pass = sha1($pass);
+    	   $c =  $this->db->prepare('SELECT * FROM '.$config->get('db_prefix').'clients where email = :user and password = :password limit 1');
+                  	   
+    	   $c->bindParam(':password',$pass);        	   
+    	   $c->bindParam(':user',$user,PDO::PARAM_STR);
+    	   $c->execute();
+    	   $user = $c->fetch();
+       
+       
+    	   if (!isset($user['clientsId'])){
+    	       $this->loginError();
+    	   }else{
+    	       $this->loginSuccess($user);
+    	   }
+    	}else{ // APP USEr
 
-
-        	   if (!isset($r['id'])){
-        	       $this->loginError();
-        	   }else{
-        	       $this->loginSuccess($r['id']);
-        	   }
-        	}				
-        } else {
-       		$this->loginError();
-        } 
-	}
+    	   $pass = sha1($pass);
+    	       $c =  $this->db->prepare('SELECT users.*,clients.name as client_name FROM '.$config->get('db_prefix').'users JOIN clients ON (users.clientsId = clients.clientsId) where users.email = :user and users.password = :password limit 1');
+                  	   
+    	   $c->bindParam(':password',$pass);        	   
+    	   $c->bindParam(':user',$user,PDO::PARAM_STR);
+    	   $c->execute();
+    	   $user = $c->fetch();
+       
+       
+    	   if (!isset($user['usersId'])){
+    	       header ("location: ".$_SESSION['return_url']);
+    	   }else{
+                $_SESSION['initiated'] = true;        
+                $_SESSION['user']['clientsId'] = $user['clientsId'];
+                $_SESSION['user']['client'] = $user['client_name'];
+                $_SESSION['user']['name'] = $user['name'];
+                $_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT'].$config->get('base_title'));
+                 header ("location: /es/app");	
+    	   }
+           } 					
+	   }else{
+	   
+	       header ("location: ".$_SESSION['return_url']);
+	   } 
+    }
 }
-?>

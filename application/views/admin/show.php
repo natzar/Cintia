@@ -6,17 +6,17 @@
 	</div>	
 <? endif; ?>
 
-          <h1 class="page-header"><?= ucfirst($table_label)?></h1>
+          <h1 class="page-header"><?= ucfirst($table_label)?> (<?= count($items) ?>)</h1>
 <? if (isset($_SESSION['errors']) and !empty($_SESSION['errors'])): ?>
 <div id="errors" class="alert alert-success">    <?= $_SESSION['errors'] ?>     </div>
 <? 
 unset($_SESSION['errors']);
 endif; ?>
-         
+         <? if ($table != "activity"): ?>
 <a class="btn btn-primary" style="display:inline-block"  href="admin/form/<?= $table ?>"><i class="glyphicon glyphicon-floppy-open"></i> <?=ADDNEW?></a>
 
 <a class="btn btn-primary" style="display:inline-block;"  href="admin/search/<?= $table ?>"><i class="glyphicon glyphicon-search"></i> <?=SEARCH?></a>
-
+<? endif; ?>
 <? if ($table == "activity"): ?>
 
 <a class="btn btn-success" style="display:inline-block;"  href="admin/export/<?= $table ?>"><i class="glyphicon glyphicon-download"></i> Exportar </a>
@@ -30,7 +30,9 @@ endif; ?>
     <table class='table table-bordered table-hover table-striped tablaMain' data-table="<?= $table ?>" id='tabla_0'  border="0" >
         <thead>
             <tr>
-
+<? if ($table == "jobs"): ?>
+<th>QR</th>
+<? endif; ?>
          	<?	foreach ($items_head as $item): ?>
             	<th nowrap><?= ucfirst($item) ?>	</th>		 
             <? endforeach; ?>
@@ -41,7 +43,12 @@ endif; ?>
             $table_no_prefix = str_replace($config->get('db_prefix'),"",$table);
                 for($i=0;$i<$itemsTotal;$i++):   ?>
                    <tr id="recordsArray_<?= $items[$i][$table_no_prefix.'Id']?>">
+<? if ($table == "jobs"): ?>
+<td width="20" style="width:20px;">
 
+    <img src="/qrgenerator.php?content=Cintia.jobs.<?= $items[$i][$table_no_prefix.'Id'] ?>"></td>
+
+<? endif; ?>
                 <?    $row = $items[$i]; 
                 $j = 0;
                 		foreach ($row as  $cell): 

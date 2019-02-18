@@ -13,7 +13,7 @@ class loginController extends ControllerBase{
     
     public function doLogin()
 	{
-    	require 'application/models/loginModel.php';
+    	require_once 'application/models/loginModel.php';
     	$loginModel = new loginModel();	
     	$loginModel->login(get_param('email'),get_param('password'));
 	}

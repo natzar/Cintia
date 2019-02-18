@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="<?= $base_url ?>/admin"><i class="glyphicon glyphicon-paperclip"></i> <?= $base_title ?></a>
+          <a class="navbar-brand" href="<?= $base_url ?>/admin"> <?= $base_title ?> <i class="glyphicon glyphicon-paperclip"></i> <?=  $_SESSION['user']['name'] ?></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">

@@ -3,5 +3,82 @@
 }
 /* System Fonts as used by GitHub */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background: #3a3a3a;
+  color:#e7e7e7;
+
+ /*  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important; */
+}
+
+body {
+  background: #181818;
+  font-family: 'Roboto', sans-serif;
+}
+body a {
+  color: #aaaaaa;
+}
+body a:hover {
+  color: #c8c8c8;
+}
+
+.header {
+  background: #282828;
+  color: #fff;
+  text-align: center; 
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+
+#app {
+
+  background: #282828;
+  color: #aaaaaa;
+  overflow-y: scroll;
+  width:100%;
+}
+#app #loader{
+
+margin:100px;
+}
+
+#app #header{
+
+}
+#app #main{
+text-align: center;
+}
+#app #main > .section {
+padding:0px;
+display: none;
+}
+#app #main > .section.show{
+display: block;
+}
+ul {
+
+  display: flex;
+  flex-flow: column wrap;
+padding:0px;
+margin:0px;
+width:100%;
+}
+
+ul li{
+  color: white;
+  padding: 20px;
+  font-size:18px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  border-top:2px solid #000;
+}
+ul li:hover {
+  color: white;
+  text-decoration: underline;
+  border-right: 3px solid #1ed760;
+}
+ul li i {
+  width: 25px;
+  display: block;
 }

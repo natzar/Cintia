@@ -1,5 +1,28 @@
 <?
 
+
+function cleanData(&$str)
+  {
+    // escape tab characters
+    $str = preg_replace("/\t/", "\\t", $str);
+
+    // escape new lines
+    $str = preg_replace("/\r?\n/", "\\n", $str);
+
+    // convert 't' and 'f' to boolean values
+    if($str == 't') $str = 'TRUE';
+    if($str == 'f') $str = 'FALSE';
+
+    // force certain number/date formats to be imported as strings
+    if(preg_match("/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/", $str)) {
+//      $str = "$str";
+
+    }
+
+    // escape fields that include double quotes
+    if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
+  }
+
  class adminController extends ControllerBase{
 
 	/* 	Admin Login
@@ -9,7 +32,7 @@
 	 	$this->view->setPath('application/views/admin/');
 	 	$_SESSION['lang'] = $this->config->get('default_lang');			
 	 	$fingerprint = md5($_SERVER['HTTP_USER_AGENT'].$this->config->get('base_title'));
-    	if (!isset($_SESSION['initiated_admin']) or !$_SESSION['initiated_admin'] or !isset($_SESSION['HTTP_USER_AGENT']) or  $_SESSION['HTTP_USER_AGENT'] != $fingerprint ){
+    	if (!isset($_SESSION['user']['clientsId']) or !isset($_SESSION['HTTP_USER_AGENT']) or  $_SESSION['HTTP_USER_AGENT'] != $fingerprint ){
 			if (get_param('email') != -1)
 				$this->do_login();
 			else $this->login();
@@ -33,7 +56,7 @@
 	{
     	require 'application/models/loginModel.php';
     	$loginModel = new loginModel();	
-    	$loginModel->login(get_param('email'),get_param('pass'));
+    	$loginModel->login(get_param('email'),get_param('pass'),true);
 	}
  
 	public function logout()
@@ -59,6 +82,7 @@
 	}
 	
 	 public function table(){
+	   
     	$config = Config::singleton();
 	    require $config->get('modelsFolder').'showModel.php';
 		$items = new showModel();
@@ -149,52 +173,48 @@
 		
     }
     
+    public function export(){
     
-     public function coursesdetail(){
-      $config = Config::singleton();
-      require 'application/models/showModel.php';
+    	$config = Config::singleton();
+	    require $config->get('modelsFolder').'showModel.php';
 		$items = new showModel();
-     	$table = 'courses';
-     	$coursesId=get_param('a');
-		$_SESSION['coursesId'] =  $coursesId ;
-		$_SESSION['return_url'] =  $_SERVER['REQUEST_URI'] ;
-    	require 'application/models/formModel.php'; 	
+      	$table = get_param('a') != -1 ? get_param('a') : $config->get('tabla_default');
 
-		$form = new formModel();
+$data = $items->getAll($table);
 
+  // filename for download
+  $filename = "website_data_" . date('Ymd') . ".xls";
 
+  header("Content-Disposition: attachment; filename=\"$filename\"");
+  header("Content-Type: application/vnd.ms-excel");
 
-        $raw =  $form->getFormValues($table,$coursesId);
-        
-        	$_SESSION['course_label'] =   $raw['title'] ;
-        
-				$data = Array(/* "table_label" => $table_label, */
-		          "title" => "BackOffice | $table",
-		          "coursesId" => $coursesId,
-		          "details" => $raw,
-		          "table_fases" => $items->getAllByField('fases','coursesId',$coursesId),
-		          "table_pages" =>  $items->getAllByField('courses_pages','coursesId',$coursesId),
-		          "table_pages_m" =>  $items->getAllByField('apartados_programas','coursesId',$coursesId),
-		          "table_challengers" => $items->getAllByField('challengers','coursesId',$coursesId),
-		          		          "table_files" => $items->getAllByField('coursefiles','coursesId',$coursesId),
-"items_head_fases" => $items->getItemsHead('fases'),
-"items_head_pages_m" => $items->getItemsHead('apartados_programas'),
-"items_head_pages" => $items->getItemsHead('courses_pages'),
-"items_head_challengers" =>$items->getItemsHead('challengers'),
-"items_head_files" =>$items->getItemsHead('coursefiles'),
-		          "HOOK_JS" => $items->js($table),
-		          "table" => $table,
-                  "table_label" => $raw['title'], 
+  $flag = false;
 
-					"notification" => get_param('i') != -1 ? 'Saved successfully' : ''
-		      		          
-		          );
-		$this->view->show("detail-course.php", $data);
-		
-		
+$data = $items->getAll($table);
+
+ echo implode("\t",  $items->getItemsHead($table)) . "\r\n";        
+   
+    
+foreach($data as $row) {
+$row = array_splice($row,1,6);
+
+    array_walk($row, __NAMESPACE__ . '\cleanData');
+    echo implode("\t", array_values($row)) . "\r\n";
+  }
+  exit;
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    
     }
-
-	
+    
+    	
 	/* Forms creation and Rows Inserting and updating
 	---------------------------------------*/
 	
@@ -433,9 +453,7 @@
 	
 	/* Presupuestos
 		---------------------------------------*/
-	public function presupuesto(){
-		$this->view->show('presupuesto.php',array());
-	}
+
 
 	public function tools()
 	{
