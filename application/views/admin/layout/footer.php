@@ -12,7 +12,7 @@
    	<script src="public/vendor/bootstrap-timepicker.min.js"></script>   	
 <script src="public/vendor/datatables/jquery.sortelements.js" type="text/javascript"></script>
 <script src="public/vendor/datatables/jquery.bdt.js" type="text/javascript"></script>
-
+<script src="public/vendor/jsoneditor.min.js" type="text/javascript"></script>
 			<script type="text/javascript" src="public/vendor/tiny_mce2/tiny_mce_src.js"></script>
 		<script type="text/javascript" src="public/admin/js/functions.js"></script>
 		<script src="public/admin/js/pagination3.js"></script>

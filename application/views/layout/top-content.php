@@ -1,6 +1,7 @@
 
   <nav class="header  lighten-1" role="navigation">
     <div class="nav-wrapper container">
+    
       <a id="logo-container" href="#" class="" style="font-size:18px"><? echo isset($_SESSION['user']['client']) ? $_SESSION['user']['client'] : 'Cintia'; ?></a>
 
      <!--
@@ -15,6 +16,7 @@
       </ul>
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 -->
+
     </div>
   </nav>
 

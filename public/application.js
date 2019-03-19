@@ -7,13 +7,14 @@
 
 $ = jQuery;
 
-var noSleep = new NoSleep();
+//var noSleep = new NoSleep();
 
 var App = {
 	Collections: {},
 	jobsId: null,
 	ordersId: null,
 	clientsId: null,
+	usersId: null,
 	DATA: {},
 	data:{
 	   self: this,
@@ -27,13 +28,14 @@ var App = {
 	       return null;
 	   }
 	},
-	usersId: null,
 	Templates: {},
 	loaded: 0,
 	Views: {},
 	init: function(opts){
 		var self = this;
-		
+		if (opts['clientsId'] == -1){
+			self.redirect();
+		}
 		for (var p in opts){
 		  this[p] = opts[p];
 		  console.log(opts[p]);
@@ -50,7 +52,8 @@ var App = {
 		});
 
 
-		document.addEventListener('install', function(e) {
+		/*
+document.addEventListener('install', function(e) {
 		 e.waitUntil(
 		   caches.open('airhorner').then(function(cache) {
 		     return cache.addAll([
@@ -65,6 +68,7 @@ var App = {
 		   })
 		 );
 		});
+*/
 		
 		
 		var isLoaded = function(){ 		
@@ -76,53 +80,32 @@ var App = {
 	          },500);
 		  }
         }
-		isLoaded();
-		
-
-        
+		isLoaded();        
 	},
 	startup: function(){
 	    var self = this;
-        this.Templates['job'] = Handlebars.compile(document.getElementById("job-template").innerHTML);
-		this.Templates['collection'] = Handlebars.compile(document.getElementById("collection-template").innerHTML);
-		this.Templates['orders'] = Handlebars.compile(document.getElementById("orders-template").innerHTML);
-		
+
+		this.Templates['orders'] = Handlebars.compile(document.getElementById("orders-template").innerHTML);	
 		this.Templates['order'] = Handlebars.compile(document.getElementById("order-template").innerHTML);
-		
 		this.Templates['jobs'] = Handlebars.compile(document.getElementById("jobs-template").innerHTML);
-		
 		this.Templates['header'] = Handlebars.compile(document.getElementById("header-template").innerHTML);
 		
-		
-//		var context = {button: "", title: "Benvingut Lucas", subheader: "Fes click a les 3 ralles per començar", "icon": ""}
-								
-				
-		//$('#app').html(this.Templates['header'](context));
-
 		this.Views['jobs'] = new JobsView();
 		this.Views['orders'] = new OrdersView();
-		this.Views['job'] = new JobView();
     	this.Views['order'] = new OrderView();
 
         this.Views['orders'].render();
-   		  
-   		  
-   		  $('#app #loader').hide();
-   		  
-   		  
-
+   		     		  
+   		$('#app #loader').hide();
 	},
 	resetUI: function(){
+		window.scrollTo(0, 0);
 	   $('#app #main >.section').removeClass("show");
 	},
 	setHeader: function(h){
 	   $('#app #header').text(h);
 	},
 	show: function(sectionId,params){
-		console.log('trying to show'+sectionId);
-		
-
-		
 		if (typeof this.Templates[sectionId] != "undefined"){
             var html = this.Templates[sectionId](params);	
             $('#app #main .section').removeClass("show");		
@@ -136,8 +119,8 @@ var App = {
 	   window.location.href="/";
 	},
 	saveActivity: function(data){
-		data.user_id = App.currentWorker;
-		data.client_id = App.client_id; // nice 
+		data.usersId = this.usersId;
+		data.clientsId = this.clientsId; // nice 
 		var activity = new Activity(data);
 		activity.save();
 	}
@@ -225,63 +208,7 @@ var OrderCollection =  Backbone.Collection.extend({
 
 var JobView = Backbone.View.extend({	
     el: $('#job.section'),
-	id: null,
-	start_date: null,
-	end_date: null,
-	initialize: function(){
-
-	},
-	events:{
-		'click .js-play-job': 'play',
-		'click .js-close-job': 'stop',
-
-	},
-	play: function(e){
-		e.preventDefault();
-		$('.js-play-job',this.el).addClass("hidden");
-		$('.js-close-job',this.el).removeClass("hidden");
-		$('.progress',this.el).removeClass("hidden");
-		this.start_date = moment();
-		document.addEventListener('click', function enableNoSleep() {
-  			document.removeEventListener('click', enableNoSleep, false);
-  			noSleep.enable();
-		}, false);		
-	},
-	stop: function(e){
-		e.preventDefault();
-		e.stopPropagation();
-		if (confirm('Això donarà la tasca per acabada. Estàs segur?')){
-			this.end_date = moment();
-			this.save();
-			this.resetView();
-			noSleep.disable();
-		}
-	},
-	render: function(id){
-		this.start_date = this.end_date = null;
-		this.id = id;						
-		var model = App.Collections.jobs.get(this.id).toJSON();				
-		App.show('job',model);
-		
-		// Clock		
-	},
-	resetView: function(){
-		$('.js-play-job').removeClass("hidden");
-		$('.js-close-job',this.el).addClass("hidden");
-		$('.progress',this.el).addClass("hidden");
-	},
-	save: function(){
-		var data = {
-			start: this.start_date.format('YYYY-MM-DD H:mm:ss'),
-			end: this.end_date.format('YYYY-MM-DD H:mm:ss'),
-			duration: moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2),
-			job_id: this.id
-		};
-
-		$('#message').html(moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2)+' minuts');
-		App.saveActivity(data);
-		
-	}
+	
 });
 
 
@@ -316,66 +243,81 @@ var qrView = new QRView();
 
 var OrderView = Backbone.View.extend({
     el: $('#order.section'),	
-	id: null,
-	start_date: null,
-	end_date: null,
+	id: null,	
+	order: null,
 	initialize: function(){
 
 	},
 	events:{
 	   'click a.breadcrumb:first-child':'back',
-	   'click #back':'back',
-	   'click #continue':'next'
+	   'click .back':'back',
+	   'click .collection-item' : 'editOrder',
+	   'click .continue':'next',	
+	   'keyup #search-products':'search'  
 	},
-	
 	render: function(id){
-    	console.log("Order.Render",id);
-		this.start_date = this.end_date = null;
 		this.id = id;			
-		console.log(App.Collections);
 		var context = App.Collections.orders.get(this.id).toJSON();				
-		context.collection = [
-		      {name: "221 Libreta blanco", "badge":12}
-		  ];
         
-        App.data.set('order', context);
-		
+        App.data.set('order', context);		
 
 		var html = App.Templates['order'](context);
 		$(this.el).html(html);
 		App.resetUI();		
 		$(this.el).addClass("show");
 	},
-	next: function(){
-	console.log('next');
+	search:function(e){
+		query = $('#search-products').val().toUpperCase();
+		console.log('search',query);
+		if (query == ""){
+			$('.collection li',this.el).show();
+		}else{
+			$('.collection li',this.el).show().not('[data-title*="'+query+'"]').hide();
+
+		}
+	},
+	editOrder: function(e){
+		$li = $(e.target);
+		e.preventDefault();
+		e.stopPropagation();
+		var done = prompt('Introduce Cantidad Completada',$li.attr("data-done"));		
+		$li.attr("data-done", done);
+		this.save();
+	},
+	next: function(){	
 	   App.Views['jobs'].render();
 	},
-	qr: function(){
 	
-	   qrView.render();
-	   
-	},
 	back: function(e){
     	e.preventDefault();
     	e.stopPropagation();
 	   App.Views['orders'].render();
 	},
-	resetView: function(){
-		$('.js-play-job').removeClass("hidden");
-		$('.js-close-job',this.el).addClass("hidden");
-		$('.progress',this.el).addClass("hidden");
+	rebuildJson: function(){
+		var json =[];
+		$('.collection li',this.el).each(function(){
+			json.push({
+				"cod": $(this).attr("data-cod"),
+				"title": $(this).attr("data-title"),
+				"done": $(this).attr("data-done"),
+				"to_do": $(this).attr("data-to-do"),
+			});
+		});
+		
+		console.log('rebuild', json);
+		return json;
 	},
 	save: function(){
-		var data = {
-			start: this.start_date.format('YYYY-MM-DD H:mm:ss'),
-			end: this.end_date.format('YYYY-MM-DD H:mm:ss'),
-			duration: moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2),
-			job_id: this.id
-		};
-
-		$('#message').html(moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2)+' minuts');
-		App.saveActivity(data);
+		var content = this.rebuildJson();
+		var model = App.Collections.orders.get(this.id);
+		// Update collection + update server
+		model.set({content: content});
+		model.save();
 		
+		// Re render
+		var html = App.Templates['order'](model.toJSON());
+		$(this.el).html(html);
+
 	}
 });
 
@@ -383,64 +325,156 @@ var OrderView = Backbone.View.extend({
 
 var JobsView = Backbone.View.extend({	
     el: $('#jobs.section'),
+    jobsId: null,
+    ordersId: null,
+	start_date:null,
+	end_date: null,
+	chrono: null,
 	initialize: function() {
 		var self = this;
-		//this.render();
 	},
-	render: function(){
-			console.log('Rendering Collection'); 				
-			
-			var context = {
+	render: function(){			
+		var context = {
 			 collection:App.Collections.jobs.toJSON(),
-			 order: App.data.get('order')
-			
-			}; //{title: "My New Post", body: "This is my first post!"};   
-
-			console.log("render",context);
-			var html    = App.Templates['jobs'](context);
-			$(this.el).html(html);
-			App.resetUI();
-			$(this.el).addClass("show");
-
+			 order: App.data.get('order')			
+		};
+		this.ordersId = App.data.get('order').ordersId;
+		var html = App.Templates['jobs'](context);
+		$(this.el).html(html);
+		App.resetUI();
+		$(this.el).addClass("show");
 	},
 	events: {		
-		'click .collection-item': 'showJob',		
+		'click a.breadcrumb:first-child':'goToOrders',
+		'click a.breadcrumb:nth-child(2)':'goToOrder',
+		'click #back':'goToOrder',
+		'click #qr-button': 'qrView.render',
+	   	'click #checkout':'checkout',
+    	'click .js-play-job': 'play',		
+		'click .js-close-job': 'stop',
+		'keyup #search-jobs': 'search'		
 	},
-	showJob: function(e){
+	search:function(e){
+		query = $('#search-jobs').val();
+		console.log('search',query);
+		if (query == ""){
+			$('.collection li',this.el).show();
+		}else{
+			$('.collection li',this.el).show().not('[data-title*="'+query+'"]').hide();
+
+		}
+	},
+
+	play: function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		var id = $(e.target).attr("id");
-		console.log("Opening job",id);
+		this.resetJobs();
 		
-		App.Views['job'].render(id);
-//		$('#nav-mobile').sidenav('close');
-	}	
+		
+		
+		$li = $(e.target).parent().parent().parent();
+		$li.addClass("active");
+		
+		
+
+		this.jobsId = $li.attr("jobsId");
+		this.start_date = moment();
+		this.chrono = new Chronometer($li.find('.title .time'));
+		this.chrono.resume();
+				
+		$li.find('.js-play-job').addClass("hidden");
+		$li.find('.js-close-job').removeClass("hidden");				
+	},
+	stop: function(e){
+		$li = $(e.target).parent().parent().parent();
+		e.preventDefault();
+		e.stopPropagation();
+		this.end_date = moment();
+		this.save();
+		this.resetJobs();
+//		noSleep.disable();
+
+		// Reset Search
+		if ($('#search-jobs').val() != ""){
+			$('#search-jobs').val('');
+			this.search();
+			// After reset search put into view the task
+			//$li[0].scrollIntoView({ behavior: "smooth"})
+		}
+
+
+	},
+	
+	resetJobs: function(){
+		if (this.chrono) this.chrono.reset();
+		$('.collection li',this.el).removeClass("active");
+		this.start_date = this.end_date = null;		
+		$('.js-play-job').removeClass("hidden");
+		$('.js-close-job',this.el).addClass("hidden");
+	},
+	save: function(){
+		var data = {
+			start: this.start_date.format('YYYY-MM-DD H:mm:ss'),
+			end: this.end_date.format('YYYY-MM-DD H:mm:ss'),
+			duration: moment.duration(moment().diff(this.start_date)).asMinutes().toFixed(2),
+			jobsId: this.jobsId,
+			ordersId: this.ordersId
+		};
+
+		App.saveActivity(data);
+		
+	},
+	goToOrders: function(e){	
+    	e.preventDefault();
+    	e.stopPropagation();
+	   App.Views['orders'].render();
+	},
+	goToOrder: function(e){	
+    	e.preventDefault();
+    	e.stopPropagation();
+    	var id = App.data.get('order').ordersId;
+
+	    App.Views['order'].render(id);
+	},
+	checkout: function(){
+		alert("Finalizar ORDEN");	
+	}
 });
-
-
-
 
 var OrdersView = Backbone.View.extend({	
     el: $('#orders.section'),
 	initialize: function() {
 		var self = this;
-		var context = {header:"Header",subheader:"sub header", icon: "user", collection: App.Collections.orders.toJSON()}; //{title: "My New Post", body: "This is my first post!"};
+		var context = {collection: App.Collections.orders.toJSON()}; //{title: "My New Post", body: "This is my first post!"};
 
 
         $(self.el).html(App.Templates['orders'](context));
 		//this.render();
 	},
 	render: function(){
+		var self = this;
         App.resetUI();
         $(this.el).addClass("show");
+        console.log($('#search-orders'));
+        
 	},
 	events: {		
-		'click .collection-item': 'showOrder',		
+		'click .collection-item': 'showOrder',	
+		'keyup #search-orders': 'search'
+
+	},
+	search:function(e){
+		query = $('#search-orders').val();
+		if (query == ""){
+			$('.collection li',this.el).show();
+		}else{
+			$('.collection li',this.el).show().not('[data-title*="'+query+'"]').hide();
+		}
 	},
 	showOrder: function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		var id = $(e.target).attr("id");
+		var id = $(e.target).attr("data-id");
 		console.log("Opening job",id);
 		
 		App.Views['order'].render(id);
@@ -450,6 +484,86 @@ var OrdersView = Backbone.View.extend({
 });
 
 $(document).ready(function(){
-	App.init({clientsId: 1});
+	if (!CONFIG) App.redirect();
+	App.init(CONFIG);
 });
 
+
+
+
+
+
+
+Chronometer = function(el) {
+  this.$el = el;
+  this.secondsUpdated = 0;
+  this.minutesUpdated = 0;
+  this.hoursUpdated = 0;
+  this.timing = undefined;
+  this.toggleOnOff = false;
+}
+
+Chronometer.prototype = {
+  // To Do Create something diferente for this guy
+  changeElement: function(elementToChange, value) {
+    value = value < 10 ? "0" + value : value
+    this.$el.find('.'+elementToChange).text(value);
+  },
+
+  // To Do Create something diferente for this guy
+  countingSeconds: function() {
+    var that = this;
+
+    this.timing = setTimeout(function() {
+      that.countingSeconds();
+    }, 1000);
+
+    if (this.secondsUpdated < 59) {
+      this.secondsUpdated += 1;
+    } else {
+      this.secondsUpdated = 0;
+
+      if (this.minutesUpdated < 59) {
+        this.minutesUpdated += 1;
+        this.changeElement("minutes", this.minutesUpdated);
+      } else {
+        this.minutesUpdated = 0;
+        this.hoursUpdated += 1;
+        this.changeElement("hours", this.hoursUpdated);
+      };
+    };
+
+    this.changeElement("seconds", this.secondsUpdated);
+  },
+
+  reset:function(){
+	this.stop();
+    this.secondsUpdated = 0;
+    this.minutesUpdated = 0;
+    this.hoursUpdated = 0;
+    this.changeElement("seconds", 0);
+    this.changeElement("minutes", 0);
+    this.changeElement("hours", 0);
+  },
+
+  resume: function(){
+    console.log('start/resume');
+    if (!this.toggleOnOff) {
+      this.toggleOnOff = true;
+      this.countingSeconds();
+    }
+  },
+
+  stop: function(){
+    console.log('stop');
+    clearTimeout(this.timing);
+    this.toggleOnOff = false;
+  }
+}
+
+
+
+
+Handlebars.registerHelper('toLowerCase', function(str) {
+  return str.toLowerCase();
+});

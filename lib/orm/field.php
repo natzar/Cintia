@@ -36,6 +36,7 @@ abstract class field{
 
 /* Include field types */
 require_once "color.php";
+require_once "json.php";
 require_once "combo.php";
 require_once "combo_child.php";
 require_once "dias_semana.php";

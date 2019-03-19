@@ -14,6 +14,7 @@ class loginModel extends ModelBase
         $_SESSION['initiated'] = true;        
         $_SESSION['user']['clientsId'] = $user['clientsId'];
         $_SESSION['user']['name'] = $user['name'];
+
         $_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT'].$config->get('base_title'));	
         header ("location: ".$config->get('base_url').'admin/table/activity');
     }
@@ -64,6 +65,7 @@ class loginModel extends ModelBase
                 $_SESSION['initiated'] = true;        
                 $_SESSION['user']['clientsId'] = $user['clientsId'];
                 $_SESSION['user']['client'] = $user['client_name'];
+                $_SESSION['user']['usersId'] = $user['usersId'];
                 $_SESSION['user']['name'] = $user['name'];
                 $_SESSION['HTTP_USER_AGENT'] = md5($_SERVER['HTTP_USER_AGENT'].$config->get('base_title'));
                  header ("location: /es/app");	

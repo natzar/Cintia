@@ -53,9 +53,10 @@ class FrontController
 
 
 		/* Current User */
-		if (!isset($_SESSION['usersId'])){
-			$_SESSION['usersId'] = -1;
-			$_SESSION['username'] = '';
+		if (!isset($_SESSION['user']['usersId'])){
+			$_SESSION['user']['clientsId'] = -1;
+			$_SESSION['user']['usersId'] = -1;
+			$_SESSION['user']['username'] = '';
 		}
 		
 		/* Get Controller->action */

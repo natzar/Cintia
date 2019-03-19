@@ -13,6 +13,7 @@
   <div id="qrscanner" class="section"><video id="qr-preview"></video></div>
   <div id="orders" class="section"></div>
 <div id="order" class="section"></div>
+<div id="checkout-order" class="section"></div>
 <div id="job" class="section"></div>
 <div id="jobs" class="section"></div>
 </div></div>
@@ -39,177 +40,136 @@
 
 <script id="orders-template" type="text/x-handlebars-template">
 <nav>
-    
-
-<div class="nav-wrapper  deep-orange darken-4">
-      <div class="col s12">
-        <a href="#!" class="breadcrumb">Ordenes</a>
-        <!--
-<a href="#!" class="breadcrumb">Second</a>
-        <a href="#!" class="breadcrumb">Third</a>
--->
-      </div>
+	<div class="nav-wrapper  orange darken-4">
+    	<div class="col s12">
+        	<a  class="breadcrumb">Ordenes</a>
+	    </div>
     </div>
-  </nav>
-   <div class="row  orange darken-4 white-text">
-        <div class="input-field white-text col s12">
-          <i class="material-icons prefix">search_circle</i>
-          <input id="icon_prefix" type="text" class="validate">
-          <label class="white-text" for="icon_prefix">Buscar</label>
-        </div>
-        </div>
-<ul class="collection black">  {{#each collection}}
-  <li class="collection-item avatar "> <i class="material-icons circle">folder</i> <a id="{{ordersId}}" class="collection-item" href="{{href}}">{{#if badge}}<span class="badge">{{badge}}</span>{{/if}} {{name}}</a></li>
-{{/each}}
-</ul>
-</script>
-
-
-<script id="collection-template" type="text/x-handlebars-template">
-<ul>  {{#each collection}}
-  <li><a id="{{jobsId}}" class="collection-item" href="{{href}}">{{#if badge}}<span class="badge">{{badge}}</span>{{/if}} {{name}}</a></li>
-{{/each}}
-</ul>
-</script>
-
-<script id="job-template" type="text/x-handlebars-template">
-  
-<div class="container">
-	<div class="section">
-	<!--   Icon Section   flash_on -->
-		<div class="row">
-			<div class="col s12 ">
-				<div class="icon-block">
-					<!--<h2 class="center light-blue-text"><i class="material-icons large">alarm</i></h2>-->
-					<h5 class="center">{{name}}</h5>
-					<p id="message" class="light center"></p>
-
-				</div>
-			</div>
-			<div class="col s12 center centered">
-				
-				<div class="progress hidden">
-      				<div class="indeterminate"></div>
-  				</div>
-  				<div class="js-time-passed"></div>
-				
-				<a class="js-play-job" href="#"><i class=" material-icons large huge massive">play_circle_outline</i></a>
-				<a class="js-close-job hidden" href="#"><i class="material-icons large ">stop</i></a>
-
-				
-			</div>
-		</div>
+</nav>
+<div class="row   white-text">
+	<div class="input-field white-text col s12">
+		<i class="material-icons prefix">search_circle</i>
+		<input id="search-orders" type="text" class="">
+		<label class="white-text" id="" for="search-orders">Buscar</label>
 	</div>
 </div>
-  
+<ul class="collection black">  
+	{{#each collection}}
+	<li data-title="{{toLowerCase name}}" data-id="{{ordersId}}" class="collection-item avatar black"> <i class="material-icons circle orange">folder</i> {{#if badge}}<span class="badge">{{badge}}</span>{{/if}} {{name}}</li>
+	{{/each}}
+</ul>
+</script>
+
+<script id="checkout-order-template" type="text/x-handlebars-template">
+<nav>
+	<div class="nav-wrapper orange darken-4">
+      <div class="col s12">
+        <a href="#orders" class="breadcrumb">Ordenes</a>
+		<a href="#!" class="breadcrumb">{{name}}</a>
+		<a class="breadcrumb"><i class="material-icons left">check</i></a>
+      </div>
+    </div>
+</nav>
+
+<ul class="collection ">  
+  	{{#each collection}}
+	  <li class="collection-item">{{cod}}<br> {{title}}<div class="right" style="right:15px"><input type="number" value="{{done}}"> / {{to_do}}</div></li>
+	{{/each}}
+</ul>
 
 
 </script>
 
 
 <script id="order-template" type="text/x-handlebars-template">
-  <nav>
-<div class="nav-wrapper deep-orange darken-4">
+<nav>
+	<div class="nav-wrapper orange darken-4">
       <div class="col s12">
         <a href="#orders" class="breadcrumb">Ordenes</a>
-
-<a href="#!" class="breadcrumb">{{name}}</a>
+		<a href="#!" class="breadcrumb">{{name}}</a>
       </div>
     </div>
-      </nav>
-      			<ul>  {{#each collection}}
-  <li><a  class="collection-item" href="#">{{#if badge}}<span class="badge">Uds: {{badge}}</span>{{/if}} {{name}}</a></li>
-{{/each}}
-</ul>
-<div class="container">
-	<div class="section">
-	<!--   Icon Section   flash_on -->
-		<div class="row">
-
-			<div class="col s12 center centered">
-			
-			
-			
-
-
-
-				<div>
-				
-				 <a id="back" class="btn-large"><i class="material-icons right">arrow_left</i> Atrás</a>
-
-				    <a id="continue" class="btn-large"><i class="material-icons right">send</i> Continuar</a>
-				   
-				    
-				</div>
-
-			</div>
-		</div>
-	</div>
-	
-	
+</nav>
+<div class="row" style="padding-top:5px">				
+		<a id="" class="btn-large back"><i class="material-icons left">chevron_left</i> Atrás</a>
+	    <a id="" class="btn-large continue"><i class="material-icons right">chevron_right</i> Continuar</a>				   	
 </div>
- 
-
-
-
+<div class="row   white-text">
+	<div class="input-field white-text col s12">
+		<i class="material-icons prefix">search_circle</i>
+		<input id="search-products" type="text" class="">
+		<label class="white-text" id="" for="search-products">Buscar</label>
+	</div>
+</div>
+<ul class="collection black">  
+  	{{#each content}}
+	  <li class="collection-item" data-cod="{{cod}}" data-title="{{title}}" data-done="{{done}}" data-to-do="{{to_do}}">{{cod}}<br> {{title}}<div class="right" style="right:15px">{{done}}/{{to_do}}</div></li>
+	{{/each}}
+</ul>
+<div class="row" style="padding-top:5px">				
+		<a id="" class="btn-large back"><i class="material-icons left">chevron_left</i> Atrás</a>
+	    <a id="" class="btn-large continue"><i class="material-icons right">chevron_right</i> Continuar</a>				   	
+</div>
 </script>
 
 <script id="jobs-template" type="text/x-handlebars-template">
- <nav>
-<div class="nav-wrapper deep-orange darken-4">
-      <div class="col s12">
-        <a href="#orders" class="breadcrumb">Ordenes</a>
+<nav>
+	<div class="nav-wrapper orange darken-4">
+		<div class="col s12">
+			<a href="#orders" class="breadcrumb">Ordenes</a>
+			<a href="#!" class="breadcrumb">{{order.name}}</a>
+			<a href="#!" class="breadcrumb">Máquinas</a>
+		</div>
+	</div>
+</nav>
 
-        <a href="#!" class="breadcrumb">{{order.name}}</a>
-        <a href="#!" class="breadcrumb">Máquinas</a>
-      </div>
-    </div>
-      </nav>
-      
+<div class="row" style="padding-top:5px">
+	<a id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">chevron_left</i> Atrás </a>
 
-    <div class="row">
-
-
-<a class="waves-effect waves-light btn">Atrás <i class="material-icons right">cloud</i></a>
-
-        <a id="qr-button" class="waves-effect waves-light btn">QR</a>                <a class="waves-effect waves-light btn">Finalizar orden <i class="material-icons right">cloud</i></a>
-
-
-
-    </div>
-
-  
-     
+	<a id="qr-button" class="waves-effect waves-light btn-large icon"><i class="material-icons left">monochrome_photos</i> QR</a>     
+</div>     
 <div class="row">
-        <div class="input-field col s12">
-          <i class="material-icons prefix">search_circle</i>
-          <input id="icon_prefix" type="text" class="validate">
-          <label for="icon_prefix">Buscar</label>
-        </div>
-        </div>  
-<ul class="collection">  {{#each collection}}
-  <li class="collection-item avatar">
-   <i class="material-icons circle">folder</i>
-      <span class="title">Title</span>
-      {{#if badge}}<p>{{badge}}    </p>{{/if}}
-      
-  <a id="{{jobsId}}" class="collection-item" href="{{href}}"> {{name}}</a></li>
-{{/each}}
+	<div class="input-field col s12">
+		<i class="material-icons prefix">search_circle</i>
+		<input id="search-jobs" type="text" class="">
+		<label for="search-jobs">Buscar</label>
+	</div>
+</div>  
+<ul class="collection">  
+	{{#each collection}}
+	<li class="collection-item avatar black" data-title="{{toLowerCase name}}" jobsId="{{jobsId}}">
+		<i class="material-icons circle orange light">alarm</i>
+		<div class="title">{{name}}<br>		
+			<div class="time js-time-passed "><span class="hours">00</span>:<span class="minutes">00</span>:<span class="seconds">00</span></div>		</div>	
+			<div class="right">
+				<a class="js-play-job " href="#"><i class=" material-icons medium">play_circle_outline</i></a>
+	<!--     	<a class="js-play-job " href="#"><i class=" material-icons medium">pause_circle_outline</i></a> -->
+				<a class="js-close-job  hidden" href="#"><i class="material-icons medium ">stop</i></a>
+			</div>
+		</div>
+	</li>  	
+	{{/each}}
 </ul>
 </script>
  <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="public/vendor/materialize/js/materialize.js"></script>
   <script>
-  (function($){
+ /*
+ (function($){
   $(function(){
 
     $('.sidenav').sidenav();
 
   }); // end of document ready
-})(jQuery); // end of jQuery name space
-
+})(jQuery);
+*/ // end of jQuery name space
+	var CONFIG = {
+		clientsId: <?= $_SESSION['user']['clientsId'] ?>,
+		usersId: <?= $_SESSION['user']['usersId'] ?>
+	};
 </script>
+
 <script type="text/javascript" src="/public/vendor/instascan.min.js"></script>
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

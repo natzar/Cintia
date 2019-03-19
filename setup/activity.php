@@ -2,7 +2,7 @@
         
         $table_label = "Activitat";
         $default_order = "activityId DESC";
-        $fields= array("ordenesId","jobsId","usersId","start","end","duration");
+        $fields= array("ordersId","jobsId","usersId","start","end","duration");
         
         $fields_labels= array("Ordre","Tasca","Usuari","Comença","Acaba","minuts");
         

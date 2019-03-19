@@ -3,16 +3,11 @@
 }
 /* System Fonts as used by GitHub */
 body {
-  background: #3a3a3a;
+  background: #000;
   color:#e7e7e7;
-
- /*  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important; */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
-body {
-  background: #181818;
-  font-family: 'Roboto', sans-serif;
-}
 body a {
   color: #aaaaaa;
 }
@@ -21,7 +16,7 @@ body a:hover {
 }
 
 .header {
-  background: #282828;
+  background: #000;
   color: #fff;
   text-align: center; 
   display: flex;
@@ -29,13 +24,10 @@ body a:hover {
   align-items: center;
 }
 
-
 #app {
-
-  background: #282828;
   color: #aaaaaa;
-  overflow-y: scroll;
   width:100%;
+  height: 100%;
 }
 #app #loader{
 
@@ -56,29 +48,82 @@ display: none;
 display: block;
 }
 ul {
-
+border:none !important;
   display: flex;
   flex-flow: column wrap;
-padding:0px;
-margin:0px;
+padding:0px !important;
+margin:0px !important;
 width:100%;
+}
+.row{
+margin-bottom:0px !important
+}
+.collection .collection-item {
+background: transparent;
+text-align: left;
+position: relative;
+color:#999;
+font-size:16px;
+padding:20px;
+}
+
+input[type=text]{
+
+color:white
+}
+
+
+.collection .collection-item:hover {
+background: transparent;
+cursor:pointer;
+cursor:hand;
+color: white;
+ border-right: 3px solid #ee6e73;
+}
+.collection .collection-item.active{
+background:#555 !important;
+}
+.collection .collection-item:first-child{
+border-top:1px solid #333 !important;
 }
 
 ul li{
   color: white;
   padding: 20px;
-  font-size:18px;
+
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  border-top:2px solid #000;
+ 
+      border-bottom: 1px solid #333 !important;
 }
-ul li:hover {
-  color: white;
-  text-decoration: underline;
-  border-right: 3px solid #1ed760;
+ul li .title{
+	text-align: left;
 }
+ul li .time{
+	color:#999;
+
+	float:left;
+}
+ul li .right{
+	position: absolute;
+    right: 50px;
+    top: 13px;
+}
+ul li .right a{
+    width: 46px;
+    display: inline-block;
+    text-align: right;
+}
+ul li .badge{
+color:#999;
+}
+
+
 ul li i {
   width: 25px;
   display: block;
+}
+ul li a{
+width:100%;
 }

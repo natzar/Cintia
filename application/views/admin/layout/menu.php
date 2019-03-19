@@ -16,7 +16,7 @@
 	
 
 	
-	<li> <a href="admin/table/ordenes"><i class="glyphicon glyphicon-book"></i> Ordres</a>  </li>	
+	<li> <a href="admin/table/orders"><i class="glyphicon glyphicon-book"></i> Ordres</a>  </li>	
 	<li> <a href="admin/table/jobs"><i class="glyphicon glyphicon-book"></i> Tasques</a>  </li>
 	<li> <a href="admin/table/users"><i class="glyphicon glyphicon-user"></i> Usuaris</a>  </li>
 

@@ -214,7 +214,29 @@ $row = array_splice($row,1,6);
     
     }
     
-    	
+     public function qr(){
+	   
+    	$config = Config::singleton();
+	    require $config->get('modelsFolder').'showModel.php';
+		$items = new showModel();
+     	$table = 'jobs';
+     	
+		$_SESSION['return_url'] =  $_SERVER['REQUEST_URI'] ;
+		$data = Array(/* "table_label" => $table_label, */
+		          "title" => "BackOffice | $table",
+		          "items_head" => $items->getItemsHead($table),
+		          "items" => $items->getAll($table),
+		          "HOOK_JS" => $items->js($table),
+                  "table" => $table,
+					"table_label" =>$items->getTableAttribute($table,'table_label'),
+					"notification" => get_param('i') != -1 ? 'Se ha guardado correctamente' : ''
+		      		          
+		        	  );
+
+		 $this->view->show("qr.php", $data);	
+    }
+    
+
 	/* Forms creation and Rows Inserting and updating
 	---------------------------------------*/
 	

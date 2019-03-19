@@ -13,8 +13,15 @@ class orderModel extends ModelBase
 			$consulta->execute();
 			return $consulta->fetchAll();			
 		}
-	
 		
+		public function updateContent($order){
+			
+			$c = $this->db->prepare('UPDATE orders SET content = :c where ordersId=:id');
+			$content = json_encode($order->content);
+			$c->bindParam(":c",$content);
+			$c->bindParam(":id",$order->ordersId);
+			$c->execute();
+			
 		
-		
+		}
 }

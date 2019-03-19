@@ -30,9 +30,7 @@ endif; ?>
     <table class='table table-bordered table-hover table-striped tablaMain' data-table="<?= $table ?>" id='tabla_0'  border="0" >
         <thead>
             <tr>
-<? if ($table == "jobs"): ?>
-<th>QR</th>
-<? endif; ?>
+
          	<?	foreach ($items_head as $item): ?>
             	<th nowrap><?= ucfirst($item) ?>	</th>		 
             <? endforeach; ?>
@@ -43,12 +41,7 @@ endif; ?>
             $table_no_prefix = str_replace($config->get('db_prefix'),"",$table);
                 for($i=0;$i<$itemsTotal;$i++):   ?>
                    <tr id="recordsArray_<?= $items[$i][$table_no_prefix.'Id']?>">
-<? if ($table == "jobs"): ?>
-<td width="20" style="width:20px;">
 
-    <img src="/qrgenerator.php?content=Cintia.jobs.<?= $items[$i][$table_no_prefix.'Id'] ?>"></td>
-
-<? endif; ?>
                 <?    $row = $items[$i]; 
                 $j = 0;
                 		foreach ($row as  $cell): 

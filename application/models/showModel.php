@@ -193,7 +193,25 @@ class showModel extends ModelBase
 			
 				}
 				
+			$output .= "
+			
+			
+			$('#editor_holder')
+  .jsoneditor({
+    schema: {},
+    theme: 'bootstrap3'
+  })
+  .on('ready', function() {
+    // Get the value
+    var value = $(this).jsoneditor('value');
 
+    value.name = 'John Smith';
+
+    // Set the value
+    $(this).jsoneditor('value',value);
+  });
+  
+			";
 			
 
 

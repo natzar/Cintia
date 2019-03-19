@@ -2,11 +2,11 @@
         
         $table_label = "Usuaris";
         $default_order = "usersId ASC";
-        $fields= array("name","password","email");
+        $fields= array("name","password");
         
-        $fields_labels= array("Nom","Password","Email");
+        $fields_labels= array("Nom","Password");
         
-        $fields_types=array("literal","password","email");
+        $fields_types=array("literal","password");
         
         
         
