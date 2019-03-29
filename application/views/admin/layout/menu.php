@@ -19,6 +19,8 @@
 	<li> <a href="admin/table/orders"><i class="glyphicon glyphicon-book"></i> Ordres</a>  </li>	
 	<li> <a href="admin/table/jobs"><i class="glyphicon glyphicon-book"></i> Tasques</a>  </li>
 	<li> <a href="admin/table/users"><i class="glyphicon glyphicon-user"></i> Usuaris</a>  </li>
+		<li> &nbsp; </li>
+			<li> <a href="admin/qr"><i class="glyphicon glyphicon-user"></i> QRs</a>  </li>
 
 
 </ul>

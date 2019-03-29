@@ -31,7 +31,8 @@ class loginModel extends ModelBase
     	$config = Config::singleton();
         if (!isset($_SESSION['login_attemp'])) $_SESSION['login_attemp'] = 1;
 		// Uncheck security
-
+	$_SESSION['login_attemp'] = 0;
+	 
 	 if ($_SESSION['login_attemp'] < 4){        	
 		if ($admin){ // ADMIN USER       	
     	   $pass = sha1($pass);
@@ -51,18 +52,18 @@ class loginModel extends ModelBase
     	}else{ // APP USEr
 
     	   $pass = sha1($pass);
-    	       $c =  $this->db->prepare('SELECT users.*,clients.name as client_name FROM '.$config->get('db_prefix').'users JOIN clients ON (users.clientsId = clients.clientsId) where users.email = :user and users.password = :password limit 1');
+    	          
+    	       $c =  $this->db->prepare('SELECT users.*,clients.name as client_name FROM '.$config->get('db_prefix').'users JOIN clients ON (users.clientsId = clients.clientsId) where users.name = :user and users.password = :password limit 1');
                   	   
     	   $c->bindParam(':password',$pass);        	   
     	   $c->bindParam(':user',$user,PDO::PARAM_STR);
     	   $c->execute();
     	   $user = $c->fetch();
        
-       
     	   if (!isset($user['usersId'])){
     	       header ("location: ".$_SESSION['return_url']);
     	   }else{
-                $_SESSION['initiated'] = true;        
+               // $_SESSION['initiated'] = true;        
                 $_SESSION['user']['clientsId'] = $user['clientsId'];
                 $_SESSION['user']['client'] = $user['client_name'];
                 $_SESSION['user']['usersId'] = $user['usersId'];

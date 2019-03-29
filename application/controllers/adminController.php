@@ -183,7 +183,7 @@ function cleanData(&$str)
 $data = $items->getAll($table);
 
   // filename for download
-  $filename = "website_data_" . date('Ymd') . ".xls";
+  $filename = "Cintia-Activity-" . date('Ymd') . ".xls";
 
   header("Content-Disposition: attachment; filename=\"$filename\"");
   header("Content-Type: application/vnd.ms-excel");

@@ -7,7 +7,7 @@
 
 $ = jQuery;
 
-//var noSleep = new NoSleep();
+var noSleep = new NoSleep();
 
 var App = {
 	Collections: {},
@@ -213,33 +213,7 @@ var JobView = Backbone.View.extend({
 
 
 
-var QRView = Backbone.View.extend({
-    scanner: null,
-    el: $('#qrscanner.section'),
-    initialize: function(){
-    
-     this.scanner = new Instascan.Scanner({ video: document.getElementById('qr-preview') });
-    },
-    render: function(){    
-      var self = this;
-     
-      this.scanner.addListener('scan', function (content) {
-        console.log(content);
-      });
-      Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          self.scanner.start(cameras[0]);
-           App.resetUI();
-          $('#qrscanner.section').addClass("show");
-        } else {
-          alert('No cameras found.');
-        }
-      }).catch(function (e) {
-        console.error(e);
-      });   
-    }    
-});
-var qrView = new QRView();
+
 
 var OrderView = Backbone.View.extend({
     el: $('#order.section'),	
@@ -280,9 +254,16 @@ var OrderView = Backbone.View.extend({
 		$li = $(e.target);
 		e.preventDefault();
 		e.stopPropagation();
-		var done = prompt('Introduce Cantidad Completada',$li.attr("data-done"));		
-		$li.attr("data-done", done);
-		this.save();
+		var done = prompt('Introduce Cantidad Completada',$li.attr("data-done"));	
+		console.log("DONE",done);
+		if (done != null){
+			if (done != "" && parseInt(done) > 0){	
+				$li.attr("data-done", done);
+			} else{
+				$li.attr("data-done", 0);
+			}
+			this.save();
+		}
 	},
 	next: function(){	
 	   App.Views['jobs'].render();
@@ -304,7 +285,6 @@ var OrderView = Backbone.View.extend({
 			});
 		});
 		
-		console.log('rebuild', json);
 		return json;
 	},
 	save: function(){
@@ -348,11 +328,41 @@ var JobsView = Backbone.View.extend({
 		'click a.breadcrumb:first-child':'goToOrders',
 		'click a.breadcrumb:nth-child(2)':'goToOrder',
 		'click #back':'goToOrder',
-		'click #qr-button': 'qrView.render',
-	   	'click #checkout':'checkout',
+		'click #qr-button': 'openQR',
     	'click .js-play-job': 'play',		
 		'click .js-close-job': 'stop',
 		'keyup #search-jobs': 'search'		
+	},
+	openQR: function(e){
+		e.preventDefault();
+		console.log('QR');
+        var self = this;
+
+		var handleQR  = function(content){
+			if (content && content.indexOf('Cintia.jobs') > -1){
+				var aux = content.split('.');
+				$li = $('.collection li[jobsId='+aux[3]+']');							
+				if ($li){
+					$li[0].scrollIntoViewIfNeeded({ behavior: "smooth"})
+					self.play($li);
+				}else{
+					alert("error QR");
+				}
+			}else{
+				alert("QR no reconocido "+content);
+			}
+		}
+
+		var video = document.getElementById('camera');
+
+		QCodeDecoder().decodeFromCamera(video, function(er,res){
+		    console.log('QR response',er,res);
+		    handleQR(res);
+		});
+  
+
+     
+     
 	},
 	search:function(e){
 		query = $('#search-jobs').val();
@@ -366,24 +376,31 @@ var JobsView = Backbone.View.extend({
 	},
 
 	play: function(e){
-		e.preventDefault();
-		e.stopPropagation();
+		
+
 		this.resetJobs();
 		
+
+		if (typeof e.target == "undefined"){
 		
-		
-		$li = $(e.target).parent().parent().parent();
+			$li = e;
+		}else{
+			e.preventDefault();
+			$li = $(e.target).parent().parent().parent();
+		}
 		$li.addClass("active");
 		
 		
 
 		this.jobsId = $li.attr("jobsId");
+				console.log('Starting job '+this.jobsId);
 		this.start_date = moment();
 		this.chrono = new Chronometer($li.find('.title .time'));
 		this.chrono.resume();
 				
 		$li.find('.js-play-job').addClass("hidden");
 		$li.find('.js-close-job').removeClass("hidden");				
+		noSleep.enable();
 	},
 	stop: function(e){
 		$li = $(e.target).parent().parent().parent();
@@ -392,7 +409,7 @@ var JobsView = Backbone.View.extend({
 		this.end_date = moment();
 		this.save();
 		this.resetJobs();
-//		noSleep.disable();
+		noSleep.disable();
 
 		// Reset Search
 		if ($('#search-jobs').val() != ""){
@@ -435,9 +452,6 @@ var JobsView = Backbone.View.extend({
     	var id = App.data.get('order').ordersId;
 
 	    App.Views['order'].render(id);
-	},
-	checkout: function(){
-		alert("Finalizar ORDEN");	
 	}
 });
 

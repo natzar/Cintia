@@ -1,28 +1,17 @@
 <!DOCTYPE html>
 <html lang="<?= $_SESSION['lang']?>">
-	<head>	
-	  <!-- 	  
-		STANDART - top.php > html headers
-		@Version 2.0
-		@Author Beto López Ayesa
-		@Email	betolopezayesa@gmail.com
-		@Date	10/Mar/2015	
-		
-	  -->	  
+	<head>		  
 	    <title><?= $SEO_TITLE ?> &raquo; <?= $base_title ?></title>
 		
 		<!-- Basic Metas -->
 	    <meta name="title" content="<?= $SEO_TITLE ?> &raquo; <?= $base_title ?>">
 	    <meta name="description" content='<?= ($SEO_DESCRIPTION )?>'>
 	    <meta name="author" content="<?= $base_title ?>">
-   		<meta name="generator" content="Standart">
    			    
    		<!-- Content type & charset -->	    
 	    <meta charset="utf-8">
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   		<meta http-equiv="content-language" content="<?= $_SESSION['lang']?>" />
-		
-
 		<link rel="manifest" href="/manifest.json">
 		
 		<meta name="mobile-web-app-capable" content="yes">
@@ -51,23 +40,6 @@
 		<link rel="icon" type="image/png" href="/public/favicon.png" />
 		<link rel="shortcut icon" href="/public/favicon.ipng">
 		<link rel="icon" type="image/png" href="/public/favicon.png" />     
-		
-		<!-- Feed RSS for the actual URL/Model -->
-		<link rel="alternate" type="application/rss+xml" title="<?= $base_title ?> &raquo; Feed" href="<?= $base_url ?>/rss" />
-		
-		<!-- Google Plus Author Account -->
-		<link rel="author" href="<?= $config->get('googlePlus') ?>" />
-	
-		<!-- Facebook -->
-		<meta property="og:locale" content="<?= $_SESSION['lang'] ?>" />
-		<meta property="og:type" content="article" />
-		<meta property="article:section" content="Uncategorized" />
-		<meta property="og:title" content="<?= $base_title ?>" />
-		<meta property="og:description" content="<?= $SEO_DESCRIPTION ?>" />
-		<meta property="og:url" content="<?= $base_url ?>" />
-		<meta property="og:site_name" content="<?= $base_title ?>" />
-		<meta property="og:image" content="<?= $SEO_IMAGE ?>" />
-
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	  	<link href="public/vendor/materialize/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 	  	<link href="public/application.css" type="text/css" rel="stylesheet" media="screen,projection"/>

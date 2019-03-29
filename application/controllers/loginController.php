@@ -15,7 +15,9 @@ class loginController extends ControllerBase{
 	{
     	require_once 'application/models/loginModel.php';
     	$loginModel = new loginModel();	
-    	$loginModel->login(get_param('email'),get_param('password'));
+    	$aux = gett();
+
+    	$loginModel->login($aux['email'],$aux['password']);
 	}
  
 	public function logout()

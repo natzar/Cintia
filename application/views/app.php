@@ -1,4 +1,4 @@
-
+<div id="camera"></div>
 <div id="app"> <div id="header"></div><div id="main"> <div class="preloader-wrapper big active" id="loader" >
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
@@ -10,7 +10,7 @@
       </div>
     </div>
   </div>
-  <div id="qrscanner" class="section"><video id="qr-preview"></video></div>
+  
   <div id="orders" class="section"></div>
 <div id="order" class="section"></div>
 <div id="checkout-order" class="section"></div>
@@ -60,25 +60,6 @@
 </ul>
 </script>
 
-<script id="checkout-order-template" type="text/x-handlebars-template">
-<nav>
-	<div class="nav-wrapper orange darken-4">
-      <div class="col s12">
-        <a href="#orders" class="breadcrumb">Ordenes</a>
-		<a href="#!" class="breadcrumb">{{name}}</a>
-		<a class="breadcrumb"><i class="material-icons left">check</i></a>
-      </div>
-    </div>
-</nav>
-
-<ul class="collection ">  
-  	{{#each collection}}
-	  <li class="collection-item">{{cod}}<br> {{title}}<div class="right" style="right:15px"><input type="number" value="{{done}}"> / {{to_do}}</div></li>
-	{{/each}}
-</ul>
-
-
-</script>
 
 
 <script id="order-template" type="text/x-handlebars-template">
@@ -91,8 +72,8 @@
     </div>
 </nav>
 <div class="row" style="padding-top:5px">				
-		<a id="" class="btn-large back"><i class="material-icons left">chevron_left</i> Atrás</a>
-	    <a id="" class="btn-large continue"><i class="material-icons right">chevron_right</i> Continuar</a>				   	
+		<a id="" class="btn back"><i class="material-icons left">chevron_left</i> Atrás</a>
+	    <a id="" class="btn continue"><i class="material-icons right">chevron_right</i> Continuar</a>				   	
 </div>
 <div class="row   white-text">
 	<div class="input-field white-text col s12">
@@ -107,8 +88,8 @@
 	{{/each}}
 </ul>
 <div class="row" style="padding-top:5px">				
-		<a id="" class="btn-large back"><i class="material-icons left">chevron_left</i> Atrás</a>
-	    <a id="" class="btn-large continue"><i class="material-icons right">chevron_right</i> Continuar</a>				   	
+		<a id="" class="btn back"><i class="material-icons left">chevron_left</i> Atrás</a>
+	    <a id="" class="btn continue"><i class="material-icons right">chevron_right</i> Continuar</a>				   	
 </div>
 </script>
 
@@ -124,9 +105,9 @@
 </nav>
 
 <div class="row" style="padding-top:5px">
-	<a id="back" class="waves-effect waves-light btn-large"><i class="material-icons left">chevron_left</i> Atrás </a>
+	<a id="back" class="waves-effect waves-light btn"><i class="material-icons left">chevron_left</i> Atrás </a>
 
-	<a id="qr-button" class="waves-effect waves-light btn-large icon"><i class="material-icons left">monochrome_photos</i> QR</a>     
+	<a id="qr-button" class="waves-effect waves-light btn icon"><i class="material-icons left">monochrome_photos</i> QR</a>     
 </div>     
 <div class="row">
 	<div class="input-field col s12">
@@ -170,7 +151,8 @@
 	};
 </script>
 
-<script type="text/javascript" src="/public/vendor/instascan.min.js"></script>
+<script src="public/vendor/qcode-decoder.min.js"></script>
+
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="public/vendor/ie10-viewport-bug-workaround.js" defer></script>

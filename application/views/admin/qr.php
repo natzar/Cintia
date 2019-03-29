@@ -8,7 +8,7 @@
 
           <h1 class="page-header">Tasques QR</h1>
 
-<a class="btn btn-success" style="display:inline-block;"  href="admin/export/<?= $table ?>"><i class="glyphicon glyphicon-print"></i> Imprimir </a>
+<a class="btn btn-success" style="display:inline-block;"  href="javascript:print();"><i class="glyphicon glyphicon-print"></i> Imprimir </a>
 
 
 <br><br>
@@ -16,35 +16,32 @@
 
 <div style="clear:both;">
 <? if (count($items) > 0): ?>
-    <table class='table table-bordered table-hover table-striped ' data-table="<?= $table ?>" id='tabla_0'  border="0" >
+    <table class='' data-table="<?= $table ?>" id='tabla_0'  border="0" >
         <tbody>
+                           <tr>
             <? $itemsTotal =count($items);
             $table_no_prefix = str_replace($config->get('db_prefix'),"",$table);
+                $col = 1;
+
                 for($i=0;$i<$itemsTotal;$i++):   ?>
-                   <tr id="recordsArray_<?= $items[$i][$table_no_prefix.'Id']?>">
+
 
 <td width="20" style="width:20px;">
-    <img src="/qrgenerator.php?content=Cintia.jobs.<?= $items[$i][$table_no_prefix.'Id'] ?>"></td>
+    <img src="/qrgenerator.php?content=Cintia.jobs.<?= $items[$i][$table_no_prefix.'Id'] ?>"><br><?= ($items[$i][0]) ?></td>
 
 
-                <?    $row = $items[$i]; 
-                $j = 0;
-                		foreach ($row as  $cell): 
-                		if ($j > 0):?>
-
-                        <td>  <?= $cell;?></td>
+             
 
                     <? 
-                    endif;
-                    $j++;
-                    endforeach; ?>
-                    <td class="actions" align="center" nowrap>
-				<a alt='edit' title='edit' href='admin/form/<?= $table ?>/<?= $items[$i][str_replace($config->get('db_prefix'),"",$table).'Id']?>'><img src='public/admin/img/pen_12x12.png'></a> &nbsp;&nbsp;
-				<? if ($table != 'home_modules'): ?>
-				<a alt='delete' title='delete' href="javascript: DeleteRegistro('recordsArray_<?= $items[$i][str_replace($config->get('db_prefix'),"",$table).'Id']?>','<?= $items[$i][str_replace($config->get('db_prefix'),"",$table).'Id']?>','','<?= $table ?>');"><img src='public/admin/img/x_11x11.png'></a><? endif; ?></td>
-                    </tr>
+
+                    if ($col % 2 == 0) echo '</tr><tr>';
+                    
+                    $col++;
+                    
+?>
             
             <? endfor; ?>
+                 </tr>
 	   </tbody>
     </table>
     
